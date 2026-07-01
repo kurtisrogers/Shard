@@ -1,0 +1,30 @@
+<div
+  data-shard-scope="{{ shard_scope }}"
+  id="shard-{{ shard_id }}"
+  class="counter"
+>
+  <p class="counter__value">
+    <strong>Count:</strong>
+    <span>{{ state.count }}</span>
+  </p>
+  <div class="counter__actions">
+    <button
+      type="button"
+      class="counter__btn"
+      hx-post="{{ shard_actions.increment }}"
+      hx-target="#shard-{{ shard_id }}"
+      hx-swap="outerHTML"
+    >
+      +{{ props.step }}
+    </button>
+    <button
+      type="button"
+      class="counter__btn"
+      hx-post="{{ shard_actions.decrement }}"
+      hx-target="#shard-{{ shard_id }}"
+      hx-swap="outerHTML"
+    >
+      -{{ props.step }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div
+  data-shard-scope="{{ shard_scope }}"
+  id="shard-{{ shard_id }}"
+  class="todo"
+  x-data="{ focusInput: false }"
+>
+  <form
+    class="todo__form"
+    hx-post="{{ shard_actions.add_item }}"
+    hx-target="#shard-{{ shard_id }}"
+    hx-swap="outerHTML"
+    @submit.prevent="$el.requestSubmit()"
+  >
+    <input
+      class="todo__input"
+      type="text"
+      name="text"
+      placeholder="{{ props.placeholder }}"
+      value="{{ state.draft }}"
+      hx-post="{{ shard_actions.set_draft }}"
+      hx-trigger="keyup changed delay:300ms"
+      hx-target="#shard-{{ shard_id }}"
+      hx-swap="outerHTML"
+      @focus="focusInput = true"
+      @blur="focusInput = false"
+    />
+    <button class="todo__submit" type="submit">Add</button>
+  </form>
+
+  {% if state.items %}
+    <ul class="todo__items">
+      {% for item in state.items %}
+        <li class="todo__item">
+          <span>{{ item }}</span>
+          <button
+            type="button"
+            class="todo__remove"
+            hx-post="{{ shard_actions.remove_item }}"
+            hx-vals='{"index": "{{ forloop.counter0 }}"}'
+            hx-target="#shard-{{ shard_id }}"
+            hx-swap="outerHTML"
+          >
+            Remove
+          </button>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="todo__empty"><em>No tasks yet.</em></p>
+  {% endif %}
+</div>

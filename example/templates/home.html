@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shard Demo</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+      }
+      body {
+        margin: 0 auto;
+        max-width: 48rem;
+        padding: 2rem 1.5rem;
+      }
+      .demo-stack {
+        display: grid;
+        gap: 1.25rem;
+      }
+    </style>
+    {% load shard %}
+    {% shard_scripts %}
+  </head>
+  <body>
+    <h1>Shard</h1>
+    <p>
+      A Django-native component framework. Define components in Python, wrap content
+      with slots, scope styles per component, and wire server state through HTMX.
+    </p>
+
+    <div class="demo-stack">
+      {% component Card title="Counter" %}
+        {% component Counter initial=3 step=2 %}{% endcomponent %}
+      {% endcomponent %}
+
+      {% component Card title="Todo list" %}
+        {% component TodoList placeholder="What needs doing?" %}{% endcomponent %}
+      {% endcomponent %}
+
+      {% component Card title="Wrapped actions" %}
+        <p>Compose leaf components inside wrappers without global CSS leaks.</p>
+        {% component Button variant="primary" %}
+          Primary action
+        {% endcomponent %}
+        {% component Button variant="ghost" %}
+          Secondary action
+        {% endcomponent %}
+      {% endcomponent %}
+    </div>
+  </body>
+</html>

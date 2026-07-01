@@ -1,0 +1,29 @@
+.btn {
+  appearance: none;
+  border: 1px solid color-mix(in srgb, CanvasText 25%, Canvas);
+  border-radius: 0.5rem;
+  background: Canvas;
+  color: CanvasText;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.45rem 0.9rem;
+}
+
+.btn:hover {
+  background: color-mix(in srgb, Canvas 92%, CanvasText 8%);
+}
+
+.btn--primary {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: #1d4ed8;
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: transparent;
+}

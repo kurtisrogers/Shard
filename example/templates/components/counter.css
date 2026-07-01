@@ -1,0 +1,19 @@
+.counter__value {
+  margin: 0 0 0.75rem;
+}
+
+.counter__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.counter__btn {
+  appearance: none;
+  border: 1px solid color-mix(in srgb, CanvasText 25%, Canvas);
+  border-radius: 0.5rem;
+  background: Canvas;
+  color: CanvasText;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.35rem 0.75rem;
+}

@@ -1,0 +1,8 @@
+<button
+  data-shard-scope="{{ shard_scope }}"
+  id="shard-{{ shard_id }}"
+  class="btn btn--{{ props.variant }}"
+  type="{{ props.button_type }}"
+>
+  {{ slots.default|safe }}
+</button>

@@ -1,0 +1,42 @@
+.todo__form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.todo__input {
+  flex: 1;
+  border: 1px solid color-mix(in srgb, CanvasText 25%, Canvas);
+  border-radius: 0.5rem;
+  font: inherit;
+  padding: 0.45rem 0.65rem;
+}
+
+.todo__submit,
+.todo__remove {
+  appearance: none;
+  border: 1px solid color-mix(in srgb, CanvasText 25%, Canvas);
+  border-radius: 0.5rem;
+  background: Canvas;
+  color: CanvasText;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.45rem 0.75rem;
+}
+
+.todo__items {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.todo__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.todo__empty {
+  margin: 0;
+  opacity: 0.75;
+}

@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-shard"
+version = "0.1.0"
+description = "A Django-native component framework with props, state, HTMX, and Alpine.js"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Shard Contributors" }]
+keywords = ["django", "components", "htmx", "alpine"]
+classifiers = [
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "Django>=4.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-django>=4.8",
+]
+
+[project.urls]
+Homepage = "https://github.com/example/shard"
+Documentation = "https://github.com/example/shard#readme"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["shard*"]
+
+[tool.setuptools.package-data]
+shard = [
+    "static/**/*",
+    "templates/**/*",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "example.example.settings"
+pythonpath = ["."]
+testpaths = ["tests"]

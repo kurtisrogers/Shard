@@ -1,0 +1,12 @@
+<article
+  data-shard-scope="{{ shard_scope }}"
+  id="shard-{{ shard_id }}"
+  class="card"
+>
+  {% if props.title %}
+    <header class="card__header">{{ props.title }}</header>
+  {% endif %}
+  <div class="card__body">
+    {{ slots.default|safe }}
+  </div>
+</article>
