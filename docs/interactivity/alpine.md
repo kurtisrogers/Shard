@@ -2,6 +2,8 @@
 
 Alpine.js is bundled for client-side interactivity that doesn't need a server round-trip.
 
+For a full walkthrough with examples, see [Working with HTMX and Alpine](../guides/htmx-and-alpine.md).
+
 ## When to use Alpine
 
 | Use Alpine for      | Use HTMX/@action for               |
@@ -88,6 +90,79 @@ document.body.addEventListener("shard:action-complete", () => {
 3. `shard.js` (defer)
 
 All scripts use `defer`, so order is preserved and DOM is ready.
+
+## Example: client-only dropdown
+
+Alpine handles open/close with no server round-trip:
+
+```python
+class Dropdown(Component):
+    template_name = "components/dropdown.html"
+
+    def get_client_state(self) -> dict:
+        return {"open": False}
+```
+
+```django
+{% load shard %}
+<div {% shard_root component %} {% shard_alpine component %}>
+  <button type="button" @click="open = !open">Menu</button>
+  <div x-show="open" x-transition @click.outside="open = false">
+    {{ slots.default|safe }}
+  </div>
+</div>
+```
+
+`{% shard_alpine component %}` outputs `x-data='{"open": false}'` from `get_client_state()`.
+
+## Example: TodoList (Alpine + HTMX together)
+
+The example app combines both tools on one root element:
+
+```django
+<div {% shard_root component %} {% shard_alpine component %}>
+  <form {% shard_htmx component "add_item" %} @submit.prevent="$el.requestSubmit()">
+    <input
+      name="text"
+      {% shard_htmx component "set_draft" trigger="keyup changed delay:300ms" %}
+      @focus="focused = true"
+      @blur="focused = false"
+    />
+    <button type="submit">Add</button>
+  </form>
+</div>
+```
+
+| Layer              | Responsibility                         |
+| ------------------ | -------------------------------------- |
+| Alpine (`focused`) | Immediate focus UI                     |
+| HTMX (`set_draft`) | Debounced sync of draft text to server |
+| HTMX (`add_item`)  | Persist new item on submit             |
+
+Full walkthrough: [Working with HTMX and Alpine](../guides/htmx-and-alpine.md#workflow-combining-alpine-and-htmx). Source: `example/templates/components/todo_list.html`.
+
+## Example: listening for HTMX events
+
+When another component's action fires `@emits("todo:added")`, react in Alpine:
+
+```html
+<div {% shard_alpine component %} @todo:added.window="focused = false"></div>
+```
+
+The `.window` modifier listens for events HTMX dispatches on `document`.
+
+## Shared and global state
+
+`{% shard_alpine %}` seeds **per-component** `x-data` from `get_client_state()`. Shard does not ship a global Alpine store.
+
+| Need                         | Use                                                                 |
+| ---------------------------- | ------------------------------------------------------------------- |
+| Persisted data               | Server `state` + HTMX                                               |
+| One component's UI chrome    | `get_client_state()`                                                |
+| Cross-component signals      | HTMX events (`@emits`, `@event.window`)                             |
+| Page layout (sidebar, theme) | Page `x-data` from Django or `Alpine.store()` in your layout script |
+
+Full guidance and examples: [Shared and global client state](../guides/htmx-and-alpine.md#shared-and-global-client-state).
 
 ## No build step
 

@@ -62,13 +62,29 @@ When `True`, scoped component CSS is minified before injection. Disable for easi
 SHARD_MINIFY_CSS = False
 ```
 
+## SHARD_VIEW_DATA_ALLOWED_COMPONENTS
+
+**Default:** `None`
+
+Optional global whitelist of component names allowed in [view data](../guides/view-data.md) trees. When `None`, you must pass `allowed_components=` to `render_view_data()` or set `allowed_view_components` on a `ViewTreeComponent` subclass.
+
+```python
+SHARD_VIEW_DATA_ALLOWED_COMPONENTS = [
+    "Layout",
+    "Card",
+    "Counter",
+]
+```
+
+For security, always restrict which components view data can instantiate. Never pass user-controlled component names without validation.
+
 ## Context processor
 
 Add `shard.context_processors.shard` to expose `SHARD` in templates:
 
 ```python
 SHARD = {
-    "version": "0.2.0",
+    "version": "0.3.0",
     "url_namespace": "shard",
     "debug": True,
 }

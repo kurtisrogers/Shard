@@ -1,0 +1,16 @@
+{% load shard %}
+<div {% shard_root component %} class="view-page">
+  <div class="view-page__toolbar" role="toolbar" aria-label="Layout controls">
+    <button type="button" class="view-page__btn" {% shard_htmx component "add_card" %}>
+      Add card
+    </button>
+    <button type="button" class="view-page__btn" {% shard_htmx component "remove_last_card" %}>
+      Remove last card
+    </button>
+    <button type="button" class="view-page__btn" {% shard_htmx component "toggle_footer" %}>
+      Toggle footer
+    </button>
+    <span class="view-page__meta">{{ computed.card_count }} card(s)</span>
+  </div>
+  {{ content_html|safe }}
+</div>

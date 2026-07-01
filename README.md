@@ -18,6 +18,7 @@ Shard does not ship a widget catalog. It gives you a small, familiar model — c
 - **Events** — HTMX custom events via `@emits` and `ActionResult`
 - **HTMX** — partial re-renders after actions
 - **Alpine.js** — optional client-side behavior inside templates
+- **View data** — optional structured layouts, mutable via `ViewTreeComponent`
 
 ## Quick start
 
@@ -50,6 +51,8 @@ See the [quickstart guide](https://kurtisrogers.github.io/Shard/getting-started/
 | Slots          | [concepts/slots](https://kurtisrogers.github.io/Shard/concepts/slots/)                             |
 | Scoped styles  | [concepts/styles](https://kurtisrogers.github.io/Shard/concepts/styles/)                           |
 | Actions & HTMX | [interactivity/actions](https://kurtisrogers.github.io/Shard/interactivity/actions/)               |
+| HTMX & Alpine  | [guides/htmx-and-alpine](https://kurtisrogers.github.io/Shard/guides/htmx-and-alpine/)             |
+| View data      | [guides/view-data](https://kurtisrogers.github.io/Shard/guides/view-data/)                         |
 | API reference  | [reference/api](https://kurtisrogers.github.io/Shard/reference/api/)                               |
 | Examples       | [examples](https://kurtisrogers.github.io/Shard/examples/)                                         |
 

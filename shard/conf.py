@@ -8,6 +8,7 @@ DEFAULTS = {
     "LOAD_ALPINE": False,
     "PRELOAD_SCRIPTS": True,
     "MINIFY_CSS": True,
+    "VIEW_DATA_ALLOWED_COMPONENTS": None,
 }
 
 

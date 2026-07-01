@@ -69,7 +69,45 @@ html = mount(Counter, props={"initial": 5})
 html = render_component(Counter, props={"initial": 5}, slots={"default": "<p>Hi</p>"})
 ```
 
-See the [Testing guide](../guides/testing.md) for pytest examples using `mount()`, `dispatch_action()`, and Django's test client for HTMX actions.
+## View data
+
+Render component trees from structured data. See the [View data guide](../guides/view-data.md).
+
+```python
+from shard import (
+    ViewTreeComponent,
+    commit_view_tree,
+    ensure_node_ids,
+    get_slot_nodes,
+    render_view_data,
+    set_slot_nodes,
+)
+
+html = render_view_data(
+    {"component": "Card", "props": {"title": "Hi"}},
+    allowed_components=frozenset({"Card"}),
+    stable=True,  # preserve child state across re-renders
+)
+```
+
+### shard.ViewTreeComponent
+
+Base class for components whose layout is stored as view data in `state["tree"]`.
+
+| Class attribute           | Default          | Description                                                   |
+| ------------------------- | ---------------- | ------------------------------------------------------------- |
+| `view_tree_key`           | `"tree"`         | State key holding the descriptor                              |
+| `content_context_key`     | `"content_html"` | Template variable for rendered tree                           |
+| `allowed_view_components` | `None`           | Whitelist; falls back to `SHARD_VIEW_DATA_ALLOWED_COMPONENTS` |
+
+| Method                             | Description                                               |
+| ---------------------------------- | --------------------------------------------------------- |
+| `get_view_tree()`                  | Return the current descriptor from state                  |
+| `set_view_tree(tree)`              | Replace the descriptor in memory                          |
+| `commit_view_tree(state, tree)`    | Replace tree in action state and prune removed node cache |
+| `render_view_tree(tree, request=)` | Render a tree with stable ids                             |
+
+Subclasses must set `template_name` and render `{{ content_html|safe }}` in the template.
 
 ## Registry
 
@@ -88,3 +126,4 @@ all_components = get_all_components()
 - `PropValidationError`
 - `ActionNotFoundError`
 - `StateNotFoundError`
+- `ViewDataError` — invalid view data or disallowed component name
