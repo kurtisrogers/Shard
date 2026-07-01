@@ -79,3 +79,16 @@ CACHES = {
 ```
 
 For development, `LocMemCache` works fine.
+
+## Documentation site
+
+Published docs: [kurtisrogers.github.io/Shard](https://kurtisrogers.github.io/Shard/)
+
+The **Deploy documentation** workflow (`.github/workflows/docs.yml`) builds MkDocs and deploys via GitHub Actions on every push to `main`. In **Settings → Pages**, set the source to **GitHub Actions** (not the `gh-pages` branch).
+
+Build locally:
+
+```bash
+pip install -e ".[docs]"
+python -m mkdocs serve
+```
