@@ -52,6 +52,7 @@ Shard keeps you in Django:
 
 - [Installation](getting-started/installation.md)
 - [Quickstart](getting-started/quickstart.md)
+- [Working with HTMX and Alpine](guides/htmx-and-alpine.md)
 - [Core concepts](concepts/philosophy.md)
 - [Testing your project](guides/testing.md)
 - [Examples](examples.md)

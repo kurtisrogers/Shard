@@ -35,6 +35,8 @@ Use the `shard_htmx` tag:
 <button {% shard_htmx component "increment" %}>+</button>
 ```
 
+For full examples (Counter, TodoList, forms, debounced input), see [Working with HTMX and Alpine](../guides/htmx-and-alpine.md).
+
 Or manually:
 
 ```html

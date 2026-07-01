@@ -2,6 +2,8 @@
 
 Shard is built around HTMX for server-driven UI updates. HTMX is bundled — no CDN or npm install needed.
 
+For a full walkthrough with examples, see [Working with HTMX and Alpine](../guides/htmx-and-alpine.md).
+
 ## Loading HTMX
 
 ```django
@@ -116,3 +118,84 @@ In development, open browser DevTools → Network. Action requests show:
 - `HX-Trigger` response header
 
 Use `python manage.py shard_list` to see registered actions per component.
+
+## Example: Counter component
+
+End-to-end HTMX-only component from the example app.
+
+**Python** — state and actions:
+
+```python
+class Counter(Component):
+    initial = Prop(int, default=0)
+    step = Prop(int, default=1)
+    template_name = "components/counter.html"
+
+    def get_initial_state(self) -> dict:
+        return {"count": self.initial}
+
+    @action
+    def increment(self, state: dict) -> dict:
+        state["count"] += self.step
+        return state
+```
+
+**Template** — one line per button:
+
+```django
+{% load shard %}
+<div {% shard_root component %} class="counter">
+  <span>{{ state.count }}</span>
+  <button type="button" {% shard_htmx component "increment" %}>+{{ props.step }}</button>
+</div>
+```
+
+**On click:** HTMX POSTs to `/shard/action/<id>/increment/`, Shard runs the action, re-renders the component, and swaps `#shard-<id>` with the new HTML.
+
+See `example/templates/components/counter.html` in the repository.
+
+## Example: form POST parameters
+
+Pass input values to action handlers via `name` attributes:
+
+```html
+<input name="text" type="text" />
+<button {% shard_htmx component "add_item" %}>Add</button>
+```
+
+```python
+@action
+def add_item(self, state, text: str = ""):
+    if text.strip():
+        state["items"].append(text.strip())
+    return state
+```
+
+## Example: debounced input
+
+Sync server state on keyup without submitting a form:
+
+```html
+<input
+  name="draft"
+  value="{{ state.draft }}"
+  {% shard_htmx component "set_draft" trigger="keyup changed delay:300ms" %}
+/>
+```
+
+Used in `TodoList` — see [Working with HTMX and Alpine](../guides/htmx-and-alpine.md#workflow-combining-alpine-and-htmx).
+
+## Example: extra POST values
+
+Pass values that are not form fields:
+
+```html
+<button {% shard_htmx component "remove_item" index=forloop.counter0 %}>Remove</button>
+```
+
+```python
+@action
+def remove_item(self, state, index: str = "0"):
+    state["items"].pop(int(index))
+    return state
+```

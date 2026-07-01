@@ -47,7 +47,11 @@ Stateful component with `@action`, `@computed`, `@emits`, and `shard_htmx`.
 
 ### TodoList
 
-Combines server state (`items`, `draft`) with Alpine client state (`focused`) and `ActionResult` events.
+Combines server state (`items`, `draft`) with Alpine client state (`focused`) and `ActionResult` events. See [Working with HTMX and Alpine](../guides/htmx-and-alpine.md) for a full walkthrough of the template patterns (debounced `set_draft`, form submit, focus tracking).
+
+### Counter
+
+HTMX-only component — buttons call `@action` methods and the whole component re-renders. Documented in [Working with HTMX and Alpine](../guides/htmx-and-alpine.md#workflow-building-an-htmx-only-component).
 
 ### ViewPage (view data)
 

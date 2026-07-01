@@ -67,6 +67,7 @@ nav:
       - interactivity/alpine.md
       - interactivity/events.md
   - Guides:
+      - guides/htmx-and-alpine.md
       - guides/composition.md
       - guides/view-data.md
       - guides/computed-values.md
