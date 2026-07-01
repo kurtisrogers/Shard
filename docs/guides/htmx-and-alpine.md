@@ -271,6 +271,131 @@ You could also use `:class="{ 'is-focused': focused }"` for visual feedback driv
 
 **Rule of thumb:** if it must survive a component re-render or page refresh, put it in server `state`. If it is purely visual and ephemeral, use Alpine.
 
+## Shared and global client state
+
+Shard seeds Alpine state **per component** via `get_client_state()` and `{% shard_alpine %}`. There is no built-in global Alpine store — that is intentional. The server remains the source of truth; Alpine handles local UI chrome.
+
+### What Shard provides
+
+| Need | Mechanism |
+| ---- | --------- |
+| Persisted data | Server `state` + `@action` |
+| Component UI (focus, open, animate) | `get_client_state()` on that component |
+| "A did something, B should react" | `@emits` / `ActionResult` + `@event.window` |
+| Layout spanning multiple components | See patterns below |
+
+### Why not a framework global Alpine store?
+
+A Shard-managed global client store would introduce a second state graph that:
+
+- Does not sync automatically with server `state` after HTMX re-renders
+- Survives `outerHTML` swaps differently from per-component `x-data` (sometimes useful, often a source of stale UI)
+- Encourages SPA-style patterns Shard deliberately avoids
+
+For shared client UI, use one of the patterns below in **your app code**. Shard documents them; it does not need to own them.
+
+### Decision guide
+
+| Need | Recommended approach |
+| ---- | -------------------- |
+| Counter, list items, form values | Server `state` + HTMX |
+| Focus, hover, open/closed on one component | `get_client_state()` on that component |
+| Component A notifies component B | HTMX events (`@emits`, `@event.window`) |
+| Sidebar/theme across the whole page | Page-level `x-data` or `Alpine.store()` (app-owned) |
+| User preference that survives refresh | Django session or database, not Alpine alone |
+
+### Pattern 1: HTMX events (preferred for coordination)
+
+When one component should **react** to another's action — not share a mutable store — use events:
+
+```python
+@emits("todo:added")
+@action
+def add_item(self, state, text: str = ""):
+    ...
+```
+
+```html
+<div {% shard_alpine component %} @todo:added.window="focused = false"></div>
+```
+
+See [Events](../interactivity/events.md).
+
+### Pattern 2: Lift client state to a parent
+
+If two children need the same ephemeral UI, put Alpine on a **parent** that is not the HTMX swap target:
+
+```django
+{# base.html — parent survives child HTMX swaps #}
+<body x-data='{"sidebarOpen": false}'>
+  <aside x-show="sidebarOpen">...</aside>
+  <main>
+    {% component Counter %}{% endcomponent %}
+  </main>
+</body>
+```
+
+Child components re-render via HTMX; layout chrome on `<body>` stays intact.
+
+### Pattern 3: Page-level `x-data` from Django
+
+Seed layout UI once from a view or context processor:
+
+```python
+# myapp/context_processors.py
+import json
+
+def alpine_layout(request):
+    return {
+        "alpine_page_state": json.dumps({
+            "sidebarOpen": False,
+            "theme": request.session.get("theme", "light"),
+        }),
+    }
+```
+
+```django
+{# templates/base.html #}
+<body x-data='{{ alpine_page_state|safe }}'>
+  {% shard_scripts alpine=True %}
+  <button @click="sidebarOpen = !sidebarOpen">Menu</button>
+  ...
+</body>
+```
+
+This is standard Django → template → Alpine. Shard does not wrap it because your app owns what belongs at page scope.
+
+### Pattern 4: `Alpine.store()` for app-wide reactivity
+
+When distant components must read/write the same client value without server round-trips, register a store in your own script:
+
+```django
+{% shard_scripts alpine=True %}
+<script>
+  document.addEventListener("alpine:init", () => {
+    Alpine.store("ui", {
+      sidebarOpen: false,
+      toggleSidebar() {
+        this.sidebarOpen = !this.sidebarOpen;
+      },
+    });
+  });
+</script>
+```
+
+```html
+<button @click="$store.ui.toggleSidebar()">Menu</button>
+<aside x-show="$store.ui.sidebarOpen">...</aside>
+```
+
+Keep stores **small and UI-only**. Do not mirror server `state` in a global Alpine store — it will drift after HTMX swaps.
+
+### What to avoid
+
+- Putting persisted business data (lists, counts, form values) in `Alpine.store()`
+- Expecting global Alpine state to survive HTMX `outerHTML` swaps on the same element that owns it
+- Using a global store when HTMX events or server `state` would be simpler
+
 ## Common patterns
 
 ### POST form fields to an action

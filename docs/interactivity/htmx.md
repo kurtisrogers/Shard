@@ -100,6 +100,8 @@ def increment(self, state):
     ...
 ```
 
+Prefer events over a shared Alpine store when components only need to **react** to each other. See [Shared and global client state](../guides/htmx-and-alpine.md#shared-and-global-client-state).
+
 ## Redirects
 
 Return `ActionResult(redirect="/somewhere/")` to trigger `HX-Redirect`.

@@ -151,6 +151,19 @@ When another component's action fires `@emits("todo:added")`, react in Alpine:
 
 The `.window` modifier listens for events HTMX dispatches on `document`.
 
+## Shared and global state
+
+`{% shard_alpine %}` seeds **per-component** `x-data` from `get_client_state()`. Shard does not ship a global Alpine store.
+
+| Need | Use |
+| ---- | --- |
+| Persisted data | Server `state` + HTMX |
+| One component's UI chrome | `get_client_state()` |
+| Cross-component signals | HTMX events (`@emits`, `@event.window`) |
+| Page layout (sidebar, theme) | Page `x-data` from Django or `Alpine.store()` in your layout script |
+
+Full guidance and examples: [Shared and global client state](../guides/htmx-and-alpine.md#shared-and-global-client-state).
+
 ## No build step
 
 Alpine is included as a static file. You write directives directly in Django templates. No `x-data` compilation or component registration on the client.
