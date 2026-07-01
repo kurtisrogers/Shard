@@ -80,6 +80,16 @@ CACHES = {
 
 For development, `LocMemCache` works fine.
 
+## Testing your project
+
+Shard components are plain Django Python classes — test them with **pytest** and **pytest-django**:
+
+```bash
+pip install pytest pytest-django
+```
+
+See the [Testing guide](../guides/testing.md) for a settings checklist, `conftest.py` examples, and patterns for `mount()`, action logic, and HTMX requests.
+
 ## Documentation site
 
 Published docs: [kurtisrogers.github.io/Shard](https://kurtisrogers.github.io/Shard/)

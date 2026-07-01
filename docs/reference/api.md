@@ -69,6 +69,8 @@ html = mount(Counter, props={"initial": 5})
 html = render_component(Counter, props={"initial": 5}, slots={"default": "<p>Hi</p>"})
 ```
 
+See the [Testing guide](../guides/testing.md) for pytest examples using `mount()`, `dispatch_action()`, and Django's test client for HTMX actions.
+
 ## Registry
 
 ```python
