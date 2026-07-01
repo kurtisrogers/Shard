@@ -1,4 +1,6 @@
 {% load static %}
 <script defer src="{% static 'shard/js/htmx.min.js' %}"></script>
+{% if alpine %}
 <script defer src="{% static 'shard/js/alpine.min.js' %}"></script>
+{% endif %}
 <script defer src="{% static 'shard/js/shard.js' %}"></script>

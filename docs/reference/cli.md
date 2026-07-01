@@ -8,6 +8,17 @@ List all registered components:
 python manage.py shard_list
 ```
 
+## shard_report
+
+Report framework size and page-load weight:
+
+```bash
+python manage.py shard_report
+python manage.py shard_report --json
+```
+
+Shows raw and gzip sizes for bundled JS, request counts, and Python package footprint.
+
 Output:
 
 ```

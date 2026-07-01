@@ -163,7 +163,7 @@ class Component(metaclass=ComponentMeta):
 
         html = render_to_string(self.template_name, context, request=request)
         styles = ""
-        if self.scoped_styles:
+        if self._should_include_styles(request):
             styles = load_scoped_styles(
                 scope=self.shard_scope,
                 template_name=self.template_name,
@@ -172,6 +172,13 @@ class Component(metaclass=ComponentMeta):
             )
 
         return mark_safe(f"{styles}{html}")
+
+    def _should_include_styles(self, request) -> bool:
+        if not self.scoped_styles:
+            return False
+        if request is not None and request.headers.get("HX-Request"):
+            return False
+        return True
 
     def render_child(
         self,

@@ -63,7 +63,7 @@ def test_shard_child_tag():
 
 
 def test_shard_scripts_includes_assets():
-    template = Template("{% load shard %}{% shard_scripts %}")
+    template = Template("{% load shard %}{% shard_scripts alpine=True %}")
     html = template.render(Context({}))
     assert "htmx.min.js" in html
     assert "alpine.min.js" in html

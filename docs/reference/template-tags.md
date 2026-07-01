@@ -4,11 +4,14 @@ Load with `{% load shard %}`.
 
 ## shard_scripts
 
-Include HTMX, Alpine.js, and Shard glue scripts. Place once per page, typically in `<head>` or before `</body>`.
+Include framework JavaScript. Place once per page.
 
 ```django
 {% shard_scripts %}
+{% shard_scripts alpine=True %}
 ```
+
+By default loads HTMX and `shard.js` only (~17 KB gzip). Pass `alpine=True` or set `SHARD_LOAD_ALPINE = True` to also load Alpine.js (~33 KB gzip total).
 
 ## component / endcomponent
 

@@ -66,8 +66,9 @@ python manage.py runserver
 
 ```bash
 pip install -e ".[dev]"
-pre-commit install          # optional: run checks before each commit
+pre-commit install
 python -m pytest tests/ -q
+python manage.py shard_report   # framework size / page-load weight
 ```
 
 **60 tests** with **≥90% coverage**. CI runs pre-commit, Ruff, tests (Python 3.10–3.12), and docs build on every PR.

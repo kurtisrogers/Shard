@@ -32,6 +32,16 @@ When `True`, Shard imports `<app>.components` for every installed app at startup
 SHARD_AUTODISCOVER = False  # manual registration only
 ```
 
+## SHARD_LOAD_ALPINE
+
+**Default:** `False`
+
+When `True`, `{% shard_scripts %}` includes Alpine.js by default. Otherwise pass `alpine=True` per page:
+
+```django
+{% shard_scripts alpine=True %}
+```
+
 ## Context processor
 
 Add `shard.context_processors.shard` to expose `SHARD` in templates:
