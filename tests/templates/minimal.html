@@ -1,0 +1,2 @@
+{% load shard %}
+<div {% shard_root component %} class="minimal">{{ props.label }}:{{ slots.default|default:""|safe }}</div>

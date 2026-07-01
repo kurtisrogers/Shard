@@ -33,6 +33,7 @@ Documentation = "https://kurtisrogers.github.io/Shard/"
 dev = [
     "pytest>=8.0",
     "pytest-django>=4.8",
+    "pytest-cov>=5.0",
 ]
 docs = [
     "mkdocs-material>=9.5",
@@ -49,6 +50,7 @@ shard = [
 ]
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "example.example.settings"
+DJANGO_SETTINGS_MODULE = "tests.settings"
 pythonpath = ["."]
 testpaths = ["tests"]
+addopts = "--cov=shard --cov-report=term-missing"

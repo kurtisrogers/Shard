@@ -67,10 +67,14 @@ python manage.py runserver
 ```bash
 pip install -e ".[dev]"
 python -m pytest tests/ -q
+```
 
+**60 tests** covering props, state, actions, template tags, HTTP views, scoping, and integration flows. See the [testing guide](https://kurtisrogers.github.io/Shard/guides/testing/) for details.
+
+```bash
 # Build documentation locally
-pip install mkdocs-material
-mkdocs serve
+pip install -e ".[docs]"
+python -m mkdocs serve
 ```
 
 ## License

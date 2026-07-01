@@ -71,6 +71,7 @@ nav:
       - guides/computed-values.md
       - guides/lifecycle-hooks.md
       - guides/nested-components.md
+      - guides/testing.md
   - Reference:
       - reference/template-tags.md
       - reference/settings.md

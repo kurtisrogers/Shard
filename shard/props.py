@@ -60,9 +60,6 @@ class Prop:
 
 
 def coerce(expected_type: type, value: Any) -> Any:
-    if isinstance(value, expected_type):
-        return value
-
     origin = get_origin(expected_type)
     if origin is list:
         (item_type,) = get_args(expected_type) or (Any,)
@@ -71,6 +68,9 @@ def coerce(expected_type: type, value: Any) -> Any:
         if not isinstance(value, list):
             raise TypeError("expected a list")
         return [coerce(item_type, item) for item in value]
+
+    if origin is None and isinstance(value, expected_type):
+        return value
 
     if expected_type is bool and isinstance(value, str):
         return value.lower() in {"1", "true", "yes", "on"}
