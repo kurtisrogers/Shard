@@ -53,4 +53,5 @@ Shard keeps you in Django:
 - [Installation](getting-started/installation.md)
 - [Quickstart](getting-started/quickstart.md)
 - [Core concepts](concepts/philosophy.md)
+- [Testing your project](guides/testing.md)
 - [Examples](examples.md)

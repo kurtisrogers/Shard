@@ -75,3 +75,7 @@ python manage.py shard_list
 ```
 
 Lists all registered components with their props and actions.
+
+## Test your components
+
+Shard works with pytest and pytest-django. See the [Testing guide](../guides/testing.md) for settings, `conftest.py`, and examples using `mount()`, direct action tests, and HTMX client requests.

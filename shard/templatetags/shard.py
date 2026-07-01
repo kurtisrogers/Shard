@@ -17,9 +17,19 @@ register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
-def shard_scripts(context) -> str:
+def shard_scripts(context, alpine: bool | None = None) -> str:
+    from shard.conf import get_setting
+
     request = context.get("request")
-    return render_to_string("shard/scripts.html", request=request)
+    load_alpine = get_setting("LOAD_ALPINE") if alpine is None else alpine
+    return render_to_string(
+        "shard/scripts.html",
+        {
+            "alpine": load_alpine,
+            "preload": get_setting("PRELOAD_SCRIPTS"),
+        },
+        request=request,
+    )
 
 
 @register.simple_tag

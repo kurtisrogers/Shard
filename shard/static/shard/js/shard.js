@@ -1,6 +1,3 @@
-/**
- * Shard framework glue for HTMX + Alpine.js
- */
 (function () {
   "use strict";
 
@@ -10,13 +7,7 @@
       if (!detail.parameters) {
         detail.parameters = {};
       }
-      detail.parameters["shard"] = "1";
+      detail.parameters.shard = "1";
     });
-  });
-
-  document.addEventListener("alpine:init", function () {
-  });
-
-  document.addEventListener("shard:action-complete", function () {
   });
 })();

@@ -5,6 +5,9 @@ DEFAULTS = {
     "STATE_TIMEOUT": 60 * 60 * 24,
     "URL_NAMESPACE": "shard",
     "AUTODISCOVER": True,
+    "LOAD_ALPINE": False,
+    "PRELOAD_SCRIPTS": True,
+    "MINIFY_CSS": True,
 }
 
 
