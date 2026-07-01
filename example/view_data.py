@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+import copy
 from typing import Any, TypedDict
+from uuid import uuid4
 
 from django.utils.safestring import SafeString
 
-from shard.exceptions import ComponentNotFoundError
+from shard.exceptions import ComponentNotFoundError, StateNotFoundError
 from shard.registry import get_component
 from shard.render import mount
+from shard.state import StateStore
 
 ALLOWED_COMPONENTS = frozenset(
     {
@@ -27,6 +30,7 @@ class ViewDataError(ValueError):
 
 
 class ViewNode(TypedDict, total=False):
+    id: str
     component: str
     props: dict[str, Any]
     slots: dict[str, list[ViewNode]]
@@ -78,11 +82,56 @@ DEMO_VIEW_DATA: ViewNode = {
         "footer": [
             {
                 "component": "Alert",
-                "props": {"level": "success", "message": "View-data spike — HTMX actions still work."},
+                "props": {
+                    "level": "success",
+                    "message": "View-data spike — layout mutates via ViewPage actions.",
+                },
             }
         ],
     },
 }
+
+
+def initial_view_tree() -> ViewNode:
+    """Return a demo tree with stable instance ids for mutable rendering."""
+
+    return ensure_node_ids(copy.deepcopy(DEMO_VIEW_DATA))
+
+
+def ensure_node_ids(node: ViewNode) -> ViewNode:
+    """Assign a stable ``id`` to every node that does not already have one."""
+
+    node = copy.deepcopy(node)
+    node.setdefault("id", uuid4().hex)
+
+    slots = node.get("slots")
+    if slots:
+        node["slots"] = {
+            slot_name: [ensure_node_ids(child) for child in children]
+            for slot_name, children in slots.items()
+        }
+
+    children = node.get("children")
+    if children:
+        node["children"] = [ensure_node_ids(child) for child in children]
+
+    return node
+
+
+def get_slot_nodes(tree: ViewNode, slot_name: str) -> list[ViewNode]:
+    """Return the child nodes for a named slot on the tree root."""
+
+    return list((tree.get("slots") or {}).get(slot_name, []))
+
+
+def set_slot_nodes(tree: ViewNode, slot_name: str, nodes: list[ViewNode]) -> ViewNode:
+    """Return a copy of ``tree`` with ``slot_name`` replaced."""
+
+    updated = copy.deepcopy(tree)
+    slots = dict(updated.get("slots") or {})
+    slots[slot_name] = nodes
+    updated["slots"] = slots
+    return updated
 
 
 def render_view_data(
@@ -90,6 +139,7 @@ def render_view_data(
     *,
     request=None,
     allowed_components: frozenset[str] | None = None,
+    stable: bool = False,
 ) -> SafeString:
     """Walk a view-data tree and mount Shard components recursively."""
 
@@ -97,7 +147,43 @@ def render_view_data(
         node,
         request=request,
         allowed_components=allowed_components or ALLOWED_COMPONENTS,
+        stable=stable,
     )
+
+
+def _mount_node(
+    component_cls,
+    *,
+    instance_id: str,
+    props: dict[str, Any],
+    slots: dict[str, str] | None,
+    request,
+    stable: bool,
+) -> SafeString:
+    if stable:
+        try:
+            record = StateStore.load(instance_id)
+            instance = component_cls(
+                instance_id=instance_id,
+                props=props,
+                state=record.state,
+                slots=slots or {},
+            )
+        except StateNotFoundError:
+            instance = component_cls(
+                instance_id=instance_id,
+                props=props,
+                slots=slots or {},
+            )
+    else:
+        instance = component_cls(
+            instance_id=instance_id,
+            props=props,
+            slots=slots or {},
+        )
+
+    instance.persist()
+    return instance.render(request=request)
 
 
 def _render_node(
@@ -105,6 +191,7 @@ def _render_node(
     *,
     request,
     allowed_components: frozenset[str],
+    stable: bool,
 ) -> SafeString:
     if not isinstance(node, dict):
         raise ViewDataError("Each view-data node must be a mapping.")
@@ -126,7 +213,7 @@ def _render_node(
         if not isinstance(child_nodes, list):
             raise ViewDataError(f"Slot '{slot_name}' must be a list of child nodes.")
         slots[slot_name] = "".join(
-            _render_node(child, request=request, allowed_components=allowed_components)
+            _render_node(child, request=request, allowed_components=allowed_components, stable=stable)
             for child in child_nodes
         )
 
@@ -135,7 +222,7 @@ def _render_node(
         raise ViewDataError("'children' must be a list of child nodes.")
 
     child_html = "".join(
-        _render_node(child, request=request, allowed_components=allowed_components)
+        _render_node(child, request=request, allowed_components=allowed_components, stable=stable)
         for child in children
     )
     if child_html:
@@ -145,9 +232,12 @@ def _render_node(
     if content:
         slots["default"] = f"{slots.get('default', '')}{content}"
 
-    return mount(
+    instance_id = node.get("id") or uuid4().hex
+    return _mount_node(
         component_cls,
+        instance_id=instance_id,
         props=node.get("props") or {},
         slots=slots or None,
         request=request,
+        stable=stable,
     )

@@ -1,0 +1,34 @@
+.view-page {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.view-page__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border: 1px solid color-mix(in srgb, CanvasText 15%, Canvas);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, CanvasText 4%, Canvas);
+}
+
+.view-page__btn {
+  font: inherit;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.35rem;
+  border: 1px solid color-mix(in srgb, CanvasText 20%, Canvas);
+  background: Canvas;
+  cursor: pointer;
+}
+
+.view-page__btn:hover {
+  background: color-mix(in srgb, CanvasText 6%, Canvas);
+}
+
+.view-page__meta {
+  margin-left: auto;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}

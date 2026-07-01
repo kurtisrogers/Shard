@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
-from example.view_data import DEMO_VIEW_DATA, render_view_data
+from example.components import ViewPage
+from shard import mount
 
 
 def home(request):
@@ -8,5 +9,5 @@ def home(request):
 
 
 def dynamic_home(request):
-    page_html = render_view_data(DEMO_VIEW_DATA, request=request)
+    page_html = mount(ViewPage, request=request)
     return render(request, "dynamic.html", {"page_html": page_html})
