@@ -41,12 +41,12 @@ html = self.render_child("Counter", props={"initial": 5})
 
 ## When to nest where
 
-| Approach                                  | Best for                              |
-| ----------------------------------------- | ------------------------------------- |
-| Slots in page template                    | Page-specific composition             |
-| `{% shard_child %}` in component template | Fixed child structure                 |
-| `render_child()` in Python                | Dynamic children based on props/state |
-| View data + `ViewTreeComponent`             | Data-driven layouts, mutable via actions |
+| Approach                                  | Best for                                 |
+| ----------------------------------------- | ---------------------------------------- |
+| Slots in page template                    | Page-specific composition                |
+| `{% shard_child %}` in component template | Fixed child structure                    |
+| `render_child()` in Python                | Dynamic children based on props/state    |
+| View data + `ViewTreeComponent`           | Data-driven layouts, mutable via actions |
 
 See [View data](view-data.md) for building layouts from structured descriptors.
 

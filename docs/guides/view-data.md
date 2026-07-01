@@ -162,14 +162,14 @@ from shard import (
 from shard.view_data import collect_node_ids, prune_orphaned_nodes
 ```
 
-| Function | Purpose |
-| -------- | ------- |
-| `ensure_node_ids(tree)` | Assign ids to nodes missing them (returns a copy) |
-| `get_slot_nodes(tree, "default")` | Read slot child nodes from the tree root |
-| `set_slot_nodes(tree, "default", nodes)` | Return a copy with a slot replaced |
-| `commit_view_tree(state, "tree", tree)` | Replace tree in state and prune removed ids |
-| `collect_node_ids(tree)` | All instance ids in a tree |
-| `prune_orphaned_nodes(ids)` | Delete cache entries for removed ids |
+| Function                                 | Purpose                                           |
+| ---------------------------------------- | ------------------------------------------------- |
+| `ensure_node_ids(tree)`                  | Assign ids to nodes missing them (returns a copy) |
+| `get_slot_nodes(tree, "default")`        | Read slot child nodes from the tree root          |
+| `set_slot_nodes(tree, "default", nodes)` | Return a copy with a slot replaced                |
+| `commit_view_tree(state, "tree", tree)`  | Replace tree in state and prune removed ids       |
+| `collect_node_ids(tree)`                 | All instance ids in a tree                        |
+| `prune_orphaned_nodes(ids)`              | Delete cache entries for removed ids              |
 
 ## Security
 
@@ -206,12 +206,12 @@ See [SHARD_VIEW_DATA_ALLOWED_COMPONENTS](../reference/settings.md#shard_view_dat
 
 ## Limitations
 
-| Topic | Behavior |
-| ----- | -------- |
-| Parent/child state | Parent actions mutate the tree; child actions mutate their own state. A parent cannot directly change child state. |
-| Scoped CSS | Dynamically added component types on the first HTMX partial may miss scoped styles unless those types were rendered in the initial page load. |
-| Cache entries | Each mounted node has its own cache key. Use Redis (not LocMem) when trees are large. |
-| Prop types | View data props are plain JSON-serializable values. Nested object prop types are not validated by `Prop`. |
+| Topic              | Behavior                                                                                                                                      |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Parent/child state | Parent actions mutate the tree; child actions mutate their own state. A parent cannot directly change child state.                            |
+| Scoped CSS         | Dynamically added component types on the first HTMX partial may miss scoped styles unless those types were rendered in the initial page load. |
+| Cache entries      | Each mounted node has its own cache key. Use Redis (not LocMem) when trees are large.                                                         |
+| Prop types         | View data props are plain JSON-serializable values. Nested object prop types are not validated by `Prop`.                                     |
 
 ## Example
 

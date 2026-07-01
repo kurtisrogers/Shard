@@ -124,9 +124,7 @@ def format_report(report: WeightReport | None = None) -> str:
 
     for asset in report.assets:
         load = "required" if asset.required else "optional"
-        lines.append(
-            f"{asset.name:<16} {asset.raw_bytes:>8,} B {asset.gzip_bytes:>8,} B  {load}"
-        )
+        lines.append(f"{asset.name:<16} {asset.raw_bytes:>8,} B {asset.gzip_bytes:>8,} B  {load}")
 
     lines.extend(
         [

@@ -8,12 +8,12 @@ This guide covers testing **your Django project** that uses Shard. For running t
 
 Before writing tests, confirm your project has the same pieces Shard needs at runtime:
 
-| Requirement | Why |
-| ----------- | --- |
-| `"shard"` in `INSTALLED_APPS` | Registers the app and autodiscovers components |
-| `path("shard/", include("shard.urls"))` | HTMX action and render endpoints |
-| `CACHES` configured | Component state (props, state, slots) is stored in Django's cache |
-| `DJANGO_SETTINGS_MODULE` for pytest | pytest-django needs your settings module |
+| Requirement                             | Why                                                               |
+| --------------------------------------- | ----------------------------------------------------------------- |
+| `"shard"` in `INSTALLED_APPS`           | Registers the app and autodiscovers components                    |
+| `path("shard/", include("shard.urls"))` | HTMX action and render endpoints                                  |
+| `CACHES` configured                     | Component state (props, state, slots) is stored in Django's cache |
+| `DJANGO_SETTINGS_MODULE` for pytest     | pytest-django needs your settings module                          |
 
 Example cache for tests (in-memory is fine):
 
@@ -262,12 +262,12 @@ def test_invalid_prop_type_raises():
 
 ## What you usually do not need
 
-| Often unnecessary | Why |
-| ----------------- | --- |
+| Often unnecessary        | Why                                          |
+| ------------------------ | -------------------------------------------- |
 | `@pytest.mark.django_db` | Shard state lives in cache, not the database |
-| Browser / Playwright | No client-side framework to hydrate |
-| Mocking HTMX | Post to Django URLs with `HTTP_HX_REQUEST` |
-| Separate frontend build | Templates render server-side in tests |
+| Browser / Playwright     | No client-side framework to hydrate          |
+| Mocking HTMX             | Post to Django URLs with `HTTP_HX_REQUEST`   |
+| Separate frontend build  | Templates render server-side in tests        |
 
 Add `django_db` only when your components or views touch the ORM.
 
@@ -315,18 +315,18 @@ Current coverage: **~93%** of the `shard` package (≥90% enforced in CI).
 
 ### Test layout
 
-| File | What it covers |
-| ---- | -------------- |
-| `test_props.py` | Prop validation, coercion, descriptors |
-| `test_scoping.py` | CSS scoping engine |
-| `test_state.py` | Cache persistence for props/state/slots |
-| `test_component.py` | Actions, computed, hooks, events, nesting |
-| `test_registry.py` | Component registration |
-| `test_htmx.py` | HTMX and Alpine attribute builders |
-| `test_templatetags.py` | Django template tags |
-| `test_views.py` | HTTP endpoints and error responses |
-| `test_styles.py` | Scoped stylesheet loading |
-| `test_integration.py` | Example app end-to-end flows |
+| File                   | What it covers                            |
+| ---------------------- | ----------------------------------------- |
+| `test_props.py`        | Prop validation, coercion, descriptors    |
+| `test_scoping.py`      | CSS scoping engine                        |
+| `test_state.py`        | Cache persistence for props/state/slots   |
+| `test_component.py`    | Actions, computed, hooks, events, nesting |
+| `test_registry.py`     | Component registration                    |
+| `test_htmx.py`         | HTMX and Alpine attribute builders        |
+| `test_templatetags.py` | Django template tags                      |
+| `test_views.py`        | HTTP endpoints and error responses        |
+| `test_styles.py`       | Scoped stylesheet loading                 |
+| `test_integration.py`  | Example app end-to-end flows              |
 
 Framework tests use `tests/settings.py`, which extends the example project settings and adds `tests/templates/` to `TEMPLATES["DIRS"]`. Isolated test components live in `tests/support/components.py` and are registered via `tests/conftest.py`.
 

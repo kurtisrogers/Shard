@@ -1,4 +1,4 @@
-from example.demo_view_data import EXAMPLE_ALLOWED_COMPONENTS, DEMO_VIEW_DATA, initial_demo_view_tree
+from example.demo_view_data import EXAMPLE_ALLOWED_COMPONENTS, initial_demo_view_tree
 from shard import (
     ActionResult,
     Component,

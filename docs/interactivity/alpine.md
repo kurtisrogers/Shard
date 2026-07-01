@@ -133,11 +133,11 @@ The example app combines both tools on one root element:
 </div>
 ```
 
-| Layer | Responsibility |
-| ----- | -------------- |
-| Alpine (`focused`) | Immediate focus UI |
+| Layer              | Responsibility                         |
+| ------------------ | -------------------------------------- |
+| Alpine (`focused`) | Immediate focus UI                     |
 | HTMX (`set_draft`) | Debounced sync of draft text to server |
-| HTMX (`add_item`) | Persist new item on submit |
+| HTMX (`add_item`)  | Persist new item on submit             |
 
 Full walkthrough: [Working with HTMX and Alpine](../guides/htmx-and-alpine.md#workflow-combining-alpine-and-htmx). Source: `example/templates/components/todo_list.html`.
 
@@ -155,11 +155,11 @@ The `.window` modifier listens for events HTMX dispatches on `document`.
 
 `{% shard_alpine %}` seeds **per-component** `x-data` from `get_client_state()`. Shard does not ship a global Alpine store.
 
-| Need | Use |
-| ---- | --- |
-| Persisted data | Server `state` + HTMX |
-| One component's UI chrome | `get_client_state()` |
-| Cross-component signals | HTMX events (`@emits`, `@event.window`) |
+| Need                         | Use                                                                 |
+| ---------------------------- | ------------------------------------------------------------------- |
+| Persisted data               | Server `state` + HTMX                                               |
+| One component's UI chrome    | `get_client_state()`                                                |
+| Cross-component signals      | HTMX events (`@emits`, `@event.window`)                             |
 | Page layout (sidebar, theme) | Page `x-data` from Django or `Alpine.store()` in your layout script |
 
 Full guidance and examples: [Shared and global client state](../guides/htmx-and-alpine.md#shared-and-global-client-state).

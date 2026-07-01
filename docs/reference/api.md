@@ -94,18 +94,18 @@ html = render_view_data(
 
 Base class for components whose layout is stored as view data in `state["tree"]`.
 
-| Class attribute | Default | Description |
-| ------------- | ------- | ----------- |
-| `view_tree_key` | `"tree"` | State key holding the descriptor |
-| `content_context_key` | `"content_html"` | Template variable for rendered tree |
-| `allowed_view_components` | `None` | Whitelist; falls back to `SHARD_VIEW_DATA_ALLOWED_COMPONENTS` |
+| Class attribute           | Default          | Description                                                   |
+| ------------------------- | ---------------- | ------------------------------------------------------------- |
+| `view_tree_key`           | `"tree"`         | State key holding the descriptor                              |
+| `content_context_key`     | `"content_html"` | Template variable for rendered tree                           |
+| `allowed_view_components` | `None`           | Whitelist; falls back to `SHARD_VIEW_DATA_ALLOWED_COMPONENTS` |
 
-| Method | Description |
-| ------ | ----------- |
-| `get_view_tree()` | Return the current descriptor from state |
-| `set_view_tree(tree)` | Replace the descriptor in memory |
-| `commit_view_tree(state, tree)` | Replace tree in action state and prune removed node cache |
-| `render_view_tree(tree, request=)` | Render a tree with stable ids |
+| Method                             | Description                                               |
+| ---------------------------------- | --------------------------------------------------------- |
+| `get_view_tree()`                  | Return the current descriptor from state                  |
+| `set_view_tree(tree)`              | Replace the descriptor in memory                          |
+| `commit_view_tree(state, tree)`    | Replace tree in action state and prune removed node cache |
+| `render_view_tree(tree, request=)` | Render a tree with stable ids                             |
 
 Subclasses must set `template_name` and render `{{ content_html|safe }}` in the template.
 

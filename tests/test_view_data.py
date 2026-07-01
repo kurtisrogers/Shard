@@ -13,7 +13,6 @@ from shard.view_data import (
     render_view_data,
     set_slot_nodes,
 )
-from tests.support.components import Minimal, Stateful, Wrapper
 
 pytestmark = pytest.mark.django_db
 

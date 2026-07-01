@@ -50,11 +50,11 @@ Load scripts once in your page layout. Pass `alpine=True` when any component on 
 
 The example app does this in `example/templates/home.html`. Without Alpine on the page, `x-data` directives are inert.
 
-| Script | Purpose |
-| ------ | ------- |
-| `htmx.min.js` | POST actions, swap HTML fragments |
-| `alpine.min.js` | `x-data`, `x-show`, `@click`, etc. |
-| `shard.js` | Adds `shard=1` to HTMX requests (framework marker) |
+| Script          | Purpose                                            |
+| --------------- | -------------------------------------------------- |
+| `htmx.min.js`   | POST actions, swap HTML fragments                  |
+| `alpine.min.js` | `x-data`, `x-show`, `@click`, etc.                 |
+| `shard.js`      | Adds `shard=1` to HTMX requests (framework marker) |
 
 ## Workflow: building an HTMX-only component
 
@@ -118,9 +118,11 @@ class Counter(Component):
 `{% shard_htmx component "increment" %}` expands to:
 
 ```html
-hx-post="/shard/action/<instance_id>/increment/"
-hx-target="#shard-<instance_id>"
-hx-swap="outerHTML"
+hx-post="/shard/action/<instance_id
+  >/increment/" hx-target="#shard-<instance_id
+    >" hx-swap="outerHTML"</instance_id
+  ></instance_id
+>
 ```
 
 HTMX POSTs to Shard, the `increment` action runs, state is saved, the component re-renders, and HTMX replaces the entire `#shard-<id>` element with the new HTML. The count in the response always matches server state.
@@ -181,10 +183,10 @@ class TodoList(Component):
         ...
 ```
 
-| Data | Where | Updated by |
-| ---- | ----- | ---------- |
-| `items`, `draft` | `state` (server) | `@action` methods |
-| `focused` | `get_client_state()` (client) | Alpine `@focus` / `@blur` |
+| Data             | Where                         | Updated by                |
+| ---------------- | ----------------------------- | ------------------------- |
+| `items`, `draft` | `state` (server)              | `@action` methods         |
+| `focused`        | `get_client_state()` (client) | Alpine `@focus` / `@blur` |
 
 ### 2. Template: Alpine on the root, HTMX on controls
 
@@ -233,14 +235,14 @@ class TodoList(Component):
 
 Key techniques in this template:
 
-| Technique | Why |
-| --------- | --- |
-| `{% shard_alpine component %}` on root | Seeds `x-data='{"focused": false}'` from `get_client_state()` |
-| `{% shard_htmx component "add_item" %}` on `<form>` | Submit POSTs `text` field to `add_item` |
-| `@submit.prevent="$el.requestSubmit()"` | Alpine prevents full navigation; HTMX handles the POST |
-| `{% shard_htmx ... trigger="keyup changed delay:300ms" %}` on input | Debounced draft sync to server without submitting |
-| `name="text"` on input | Becomes `text=` keyword arg in `add_item(self, state, text=...)` |
-| `index=forloop.counter0` on remove button | Passed as `index=` to `remove_item` via `hx-vals` |
+| Technique                                                           | Why                                                              |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `{% shard_alpine component %}` on root                              | Seeds `x-data='{"focused": false}'` from `get_client_state()`    |
+| `{% shard_htmx component "add_item" %}` on `<form>`                 | Submit POSTs `text` field to `add_item`                          |
+| `@submit.prevent="$el.requestSubmit()"`                             | Alpine prevents full navigation; HTMX handles the POST           |
+| `{% shard_htmx ... trigger="keyup changed delay:300ms" %}` on input | Debounced draft sync to server without submitting                |
+| `name="text"` on input                                              | Becomes `text=` keyword arg in `add_item(self, state, text=...)` |
+| `index=forloop.counter0` on remove button                           | Passed as `index=` to `remove_item` via `hx-vals`                |
 
 ### 3. Debounced server sync
 
@@ -258,16 +260,16 @@ You could also use `:class="{ 'is-focused': focused }"` for visual feedback driv
 
 ## When to use HTMX vs Alpine
 
-| Task | Tool | Example |
-| ---- | ---- | ------- |
-| Increment a counter | HTMX | `Counter.increment` |
-| Persist a todo list | HTMX | `TodoList.add_item` |
-| Sync draft text to server | HTMX (debounced) | `TodoList.set_draft` |
-| Track input focus | Alpine | `focused` in `get_client_state()` |
-| Toggle a dropdown open | Alpine | `open = !open` |
-| Animate panel enter/leave | Alpine | `x-show` + `x-transition` |
-| Save form to database | HTMX | `@action` + `ActionResult` |
-| Navigate after save | HTMX | `ActionResult(redirect="/done/")` |
+| Task                      | Tool             | Example                           |
+| ------------------------- | ---------------- | --------------------------------- |
+| Increment a counter       | HTMX             | `Counter.increment`               |
+| Persist a todo list       | HTMX             | `TodoList.add_item`               |
+| Sync draft text to server | HTMX (debounced) | `TodoList.set_draft`              |
+| Track input focus         | Alpine           | `focused` in `get_client_state()` |
+| Toggle a dropdown open    | Alpine           | `open = !open`                    |
+| Animate panel enter/leave | Alpine           | `x-show` + `x-transition`         |
+| Save form to database     | HTMX             | `@action` + `ActionResult`        |
+| Navigate after save       | HTMX             | `ActionResult(redirect="/done/")` |
 
 **Rule of thumb:** if it must survive a component re-render or page refresh, put it in server `state`. If it is purely visual and ephemeral, use Alpine.
 
@@ -277,12 +279,12 @@ Shard seeds Alpine state **per component** via `get_client_state()` and `{% shar
 
 ### What Shard provides
 
-| Need | Mechanism |
-| ---- | --------- |
-| Persisted data | Server `state` + `@action` |
-| Component UI (focus, open, animate) | `get_client_state()` on that component |
-| "A did something, B should react" | `@emits` / `ActionResult` + `@event.window` |
-| Layout spanning multiple components | See patterns below |
+| Need                                | Mechanism                                   |
+| ----------------------------------- | ------------------------------------------- |
+| Persisted data                      | Server `state` + `@action`                  |
+| Component UI (focus, open, animate) | `get_client_state()` on that component      |
+| "A did something, B should react"   | `@emits` / `ActionResult` + `@event.window` |
+| Layout spanning multiple components | See patterns below                          |
 
 ### Why not a framework global Alpine store?
 
@@ -296,13 +298,13 @@ For shared client UI, use one of the patterns below in **your app code**. Shard 
 
 ### Decision guide
 
-| Need | Recommended approach |
-| ---- | -------------------- |
-| Counter, list items, form values | Server `state` + HTMX |
-| Focus, hover, open/closed on one component | `get_client_state()` on that component |
-| Component A notifies component B | HTMX events (`@emits`, `@event.window`) |
-| Sidebar/theme across the whole page | Page-level `x-data` or `Alpine.store()` (app-owned) |
-| User preference that survives refresh | Django session or database, not Alpine alone |
+| Need                                       | Recommended approach                                |
+| ------------------------------------------ | --------------------------------------------------- |
+| Counter, list items, form values           | Server `state` + HTMX                               |
+| Focus, hover, open/closed on one component | `get_client_state()` on that component              |
+| Component A notifies component B           | HTMX events (`@emits`, `@event.window`)             |
+| Sidebar/theme across the whole page        | Page-level `x-data` or `Alpine.store()` (app-owned) |
+| User preference that survives refresh      | Django session or database, not Alpine alone        |
 
 ### Pattern 1: HTMX events (preferred for coordination)
 
@@ -480,10 +482,7 @@ class Dropdown(Component):
 ### React to another component's event in Alpine
 
 ```html
-<div
-  {% shard_alpine component %}
-  @todo:added.window="focused = false"
-></div>
+<div {% shard_alpine component %} @todo:added.window="focused = false"></div>
 ```
 
 `@emits` / `ActionResult` events are fired on `document` via HTMX's `HX-Trigger` header.
@@ -510,7 +509,7 @@ python manage.py runserver
 
 Source files:
 
-| Component | Python | Template |
-| --------- | ------ | -------- |
-| Counter | `example/components.py` | `example/templates/components/counter.html` |
-| TodoList | `example/components.py` | `example/templates/components/todo_list.html` |
+| Component | Python                  | Template                                      |
+| --------- | ----------------------- | --------------------------------------------- |
+| Counter   | `example/components.py` | `example/templates/components/counter.html`   |
+| TodoList  | `example/components.py` | `example/templates/components/todo_list.html` |

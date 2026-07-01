@@ -201,7 +201,9 @@ def _render_node(
         if not isinstance(child_nodes, list):
             raise ViewDataError(f"Slot '{slot_name}' must be a list of child nodes.")
         slots[slot_name] = "".join(
-            _render_node(child, request=request, allowed_components=allowed_components, stable=stable)
+            _render_node(
+                child, request=request, allowed_components=allowed_components, stable=stable
+            )
             for child in child_nodes
         )
 
