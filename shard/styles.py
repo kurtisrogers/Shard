@@ -5,6 +5,8 @@ from pathlib import Path
 from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
 
+from shard.conf import get_setting
+from shard.css_minify import minify_css
 from shard.scoping import scope_css
 
 
@@ -72,4 +74,6 @@ def load_scoped_styles(
         return ""
 
     scoped = "\n".join(scope_css(chunk, scope) for chunk in css_chunks)
+    if get_setting("MINIFY_CSS"):
+        scoped = minify_css(scoped)
     return f'<style data-shard-styles="{scope}">{scoped}</style>'

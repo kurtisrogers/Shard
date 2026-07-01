@@ -24,7 +24,10 @@ def shard_scripts(context, alpine: bool | None = None) -> str:
     load_alpine = get_setting("LOAD_ALPINE") if alpine is None else alpine
     return render_to_string(
         "shard/scripts.html",
-        {"alpine": load_alpine},
+        {
+            "alpine": load_alpine,
+            "preload": get_setting("PRELOAD_SCRIPTS"),
+        },
         request=request,
     )
 

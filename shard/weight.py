@@ -48,6 +48,25 @@ class WeightReport:
         return len(self.assets)
 
 
+@dataclass(frozen=True)
+class BudgetLimits:
+    asset_gzip_bytes: dict[str, int]
+    required_gzip_bytes: int
+    total_gzip_bytes: int
+
+
+# Headroom above current shipped sizes; CI fails if assets grow past these limits.
+DEFAULT_BUDGETS = BudgetLimits(
+    asset_gzip_bytes={
+        "htmx.min.js": 17_500,
+        "shard.js": 500,
+        "alpine.min.js": 17_500,
+    },
+    required_gzip_bytes=18_000,
+    total_gzip_bytes=35_000,
+)
+
+
 ASSET_DEFINITIONS: tuple[tuple[str, bool], ...] = (
     ("js/htmx.min.js", True),
     ("js/shard.js", True),
@@ -125,10 +144,54 @@ def format_report(report: WeightReport | None = None) -> str:
             "Tips:",
             "  - Use {% shard_scripts %} without Alpine unless you need client state",
             "  - Scoped CSS is omitted from HTMX partial responses after first render",
+            "  - Component CSS is minified by default (SHARD_MINIFY_CSS)",
+            "  - HTMX/shard.js preload hints are enabled by default (SHARD_PRELOAD_SCRIPTS)",
             "  - Run with --json for machine-readable output",
+            "  - Run with --check-budget to fail CI when assets exceed limits",
         ]
     )
     return "\n".join(lines)
+
+
+def check_budget(
+    report: WeightReport | None = None,
+    budgets: BudgetLimits | None = None,
+) -> list[str]:
+    report = report or build_report()
+    budgets = budgets or DEFAULT_BUDGETS
+    violations: list[str] = []
+
+    for asset in report.assets:
+        limit = budgets.asset_gzip_bytes.get(asset.name)
+        if limit is not None and asset.gzip_bytes > limit:
+            violations.append(
+                f"{asset.name}: {asset.gzip_bytes:,} B gzip exceeds budget of {limit:,} B"
+            )
+
+    if report.required_gzip_bytes > budgets.required_gzip_bytes:
+        violations.append(
+            "Required JS total: "
+            f"{report.required_gzip_bytes:,} B gzip exceeds budget of "
+            f"{budgets.required_gzip_bytes:,} B"
+        )
+
+    if report.total_gzip_bytes > budgets.total_gzip_bytes:
+        violations.append(
+            "Total JS: "
+            f"{report.total_gzip_bytes:,} B gzip exceeds budget of "
+            f"{budgets.total_gzip_bytes:,} B"
+        )
+
+    return violations
+
+
+def budgets_as_dict(budgets: BudgetLimits | None = None) -> dict:
+    budgets = budgets or DEFAULT_BUDGETS
+    return {
+        "asset_gzip_bytes": dict(budgets.asset_gzip_bytes),
+        "required_gzip_bytes": budgets.required_gzip_bytes,
+        "total_gzip_bytes": budgets.total_gzip_bytes,
+    }
 
 
 def report_as_dict(report: WeightReport | None = None) -> dict:
@@ -153,4 +216,5 @@ def report_as_dict(report: WeightReport | None = None) -> dict:
             "request_count_with_alpine": report.request_count_with_alpine,
             "python_module_bytes": report.python_module_bytes,
         },
+        "budgets": budgets_as_dict(),
     }

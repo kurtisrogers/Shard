@@ -1,4 +1,11 @@
 {% load static %}
+{% if preload %}
+<link rel="preload" href="{% static 'shard/js/htmx.min.js' %}" as="script">
+<link rel="preload" href="{% static 'shard/js/shard.js' %}" as="script">
+{% if alpine %}
+<link rel="preload" href="{% static 'shard/js/alpine.min.js' %}" as="script">
+{% endif %}
+{% endif %}
 <script defer src="{% static 'shard/js/htmx.min.js' %}"></script>
 {% if alpine %}
 <script defer src="{% static 'shard/js/alpine.min.js' %}"></script>

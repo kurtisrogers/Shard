@@ -1,0 +1,18 @@
+from django.test import override_settings
+
+from shard import mount
+from tests.support.components import Wrapper
+
+
+@override_settings(SHARD_MINIFY_CSS=True)
+def test_scoped_styles_are_minified_by_default():
+    html = mount(Wrapper, slots={"default": "x"})
+    assert '<style data-shard-styles="wrapper">' in html
+    assert ".wrapper{padding:1rem;}" in html
+
+
+@override_settings(SHARD_MINIFY_CSS=False)
+def test_scoped_styles_can_disable_minification():
+    html = mount(Wrapper, slots={"default": "x"})
+    assert "padding: 1rem" in html
+    assert "padding:1rem" not in html

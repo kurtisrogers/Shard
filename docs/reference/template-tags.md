@@ -13,6 +13,8 @@ Include framework JavaScript. Place once per page.
 
 By default loads HTMX and `shard.js` only (~17 KB gzip). Pass `alpine=True` or set `SHARD_LOAD_ALPINE = True` to also load Alpine.js (~33 KB gzip total).
 
+Preload hints for required scripts are enabled by default (`SHARD_PRELOAD_SCRIPTS`).
+
 ## component / endcomponent
 
 Render a component with optional slot content.

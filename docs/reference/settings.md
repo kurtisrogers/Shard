@@ -42,6 +42,26 @@ When `True`, `{% shard_scripts %}` includes Alpine.js by default. Otherwise pass
 {% shard_scripts alpine=True %}
 ```
 
+## SHARD_PRELOAD_SCRIPTS
+
+**Default:** `True`
+
+When `True`, `{% shard_scripts %}` emits `<link rel="preload" as="script">` hints for HTMX and `shard.js` (and Alpine when loaded). Disable if your CSP or asset pipeline handles preloading elsewhere:
+
+```python
+SHARD_PRELOAD_SCRIPTS = False
+```
+
+## SHARD_MINIFY_CSS
+
+**Default:** `True`
+
+When `True`, scoped component CSS is minified before injection. Disable for easier debugging of generated styles:
+
+```python
+SHARD_MINIFY_CSS = False
+```
+
 ## Context processor
 
 Add `shard.context_processors.shard` to expose `SHARD` in templates:

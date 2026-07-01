@@ -14,6 +14,13 @@ JSON output for tooling:
 python manage.py shard_report --json
 ```
 
+Fail CI when bundled assets exceed budgets:
+
+```bash
+python manage.py shard_report --check-budget
+python manage.py shard_report --json --check-budget
+```
+
 ## Client weight (default setup)
 
 Shard ships three JavaScript files. Only two are required for most pages:
@@ -71,6 +78,14 @@ Alpine.js is only loaded when you request it. Components that use only server st
 
 `shard.js` is under 1 KB. It only tags HTMX requests so the server can identify Shard actions.
 
+### Scoped CSS minification
+
+Component styles are minified by default before injection (`SHARD_MINIFY_CSS`). This reduces transfer size on first mount without a build step.
+
+### Script preload hints
+
+`{% shard_scripts %}` emits `<link rel="preload" as="script">` for HTMX and `shard.js` by default so browsers can fetch them earlier during HTML parse (`SHARD_PRELOAD_SCRIPTS`).
+
 ### Co-located CSS, not a global bundle
 
 Styles are scoped per component and only included when that component mounts. There is no site-wide CSS payload from Shard.
@@ -82,6 +97,27 @@ Styles are scoped per component and only included when that component mounts. Th
 3. **Use Django's cache** with a production backend (Redis) if you mount many components
 4. **Enable gzip/brotli** on your reverse proxy for static files (standard Django deployment)
 5. **Set `SHARD_STATE_TIMEOUT`** to expire unused component state
+6. **Run `shard_report --check-budget` in CI** to catch asset regressions
+
+## Size budgets
+
+Shard ships conservative gzip budgets for bundled JavaScript. CI runs:
+
+```bash
+python manage.py shard_report --check-budget
+```
+
+Current limits (see `shard/weight.py`):
+
+| Check | Budget |
+| ----- | ------ |
+| `htmx.min.js` gzip | 17.5 KB |
+| `shard.js` gzip | 500 B |
+| `alpine.min.js` gzip | 17.5 KB |
+| Required JS total | 18 KB |
+| All JS (with Alpine) | 35 KB |
+
+Raise budgets intentionally when upgrading vendored libraries.
 
 ## Comparison mindset
 

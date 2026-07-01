@@ -6,6 +6,8 @@ DEFAULTS = {
     "URL_NAMESPACE": "shard",
     "AUTODISCOVER": True,
     "LOAD_ALPINE": False,
+    "PRELOAD_SCRIPTS": True,
+    "MINIFY_CSS": True,
 }
 
 
