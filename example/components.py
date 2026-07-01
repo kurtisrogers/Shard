@@ -1,15 +1,16 @@
-from django.template.loader import render_to_string
-from django.utils.safestring import mark_safe
-
-from example.view_data import (
+from example.demo_view_data import EXAMPLE_ALLOWED_COMPONENTS, DEMO_VIEW_DATA, initial_demo_view_tree
+from shard import (
+    ActionResult,
+    Component,
+    Prop,
+    ViewTreeComponent,
+    action,
+    computed,
+    emits,
     ensure_node_ids,
     get_slot_nodes,
-    initial_view_tree,
-    render_view_data,
     set_slot_nodes,
 )
-from shard import ActionResult, Component, Prop, action, computed, emits
-from shard.styles import load_scoped_styles
 
 
 class Layout(Component):
@@ -104,13 +105,14 @@ class TodoList(Component):
         return state
 
 
-class ViewPage(Component):
-    """Spike: mutable page layout driven by a view-data tree stored in state."""
+class ViewPage(ViewTreeComponent):
+    """Demo page with a mutable layout driven by view data in server state."""
 
+    allowed_view_components = EXAMPLE_ALLOWED_COMPONENTS
     template_name = "components/view_page.html"
 
     def get_initial_state(self) -> dict:
-        return {"tree": initial_view_tree(), "footer_visible": True}
+        return {"tree": initial_demo_view_tree(), "footer_visible": True}
 
     @computed
     def card_count(self) -> int:
@@ -132,7 +134,7 @@ class ViewPage(Component):
                 }
             )
         )
-        state["tree"] = set_slot_nodes(tree, "default", cards)
+        self.commit_view_tree(state, set_slot_nodes(tree, "default", cards))
         return state
 
     @action
@@ -140,8 +142,7 @@ class ViewPage(Component):
         tree = state["tree"]
         cards = get_slot_nodes(tree, "default")
         if cards:
-            cards = cards[:-1]
-            state["tree"] = set_slot_nodes(tree, "default", cards)
+            self.commit_view_tree(state, set_slot_nodes(tree, "default", cards[:-1]))
         return state
 
     @action
@@ -162,29 +163,6 @@ class ViewPage(Component):
             ]
         else:
             footer = []
-        state["tree"] = set_slot_nodes(tree, "footer", footer)
+        self.commit_view_tree(state, set_slot_nodes(tree, "footer", footer))
         state["footer_visible"] = footer_visible
         return state
-
-    def render(self, request=None):
-        tree = ensure_node_ids(self.state["tree"])
-        self._state["tree"] = tree
-        content_html = render_view_data(tree, request=request, stable=True)
-
-        context = self.get_context_data()
-        context["content_html"] = content_html
-        if request is not None:
-            context["request"] = request
-
-        html = render_to_string(self.template_name, context, request=request)
-        styles = ""
-        if self._should_include_styles(request):
-            styles = load_scoped_styles(
-                scope=self.shard_scope,
-                template_name=self.template_name,
-                stylesheets=self.stylesheets,
-                inline_styles=self.styles,
-            )
-
-        self.persist()
-        return mark_safe(f"{styles}{html}")

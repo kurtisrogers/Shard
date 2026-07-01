@@ -13,6 +13,8 @@ python manage.py runserver
 
 Open http://127.0.0.1:8000/
 
+The demo also includes a [view data](../guides/view-data.md) page at http://127.0.0.1:8000/dynamic/ — a layout built from a structured component tree that can be mutated via HTMX actions.
+
 ## Components demonstrated
 
 ### Layout
@@ -47,12 +49,18 @@ Stateful component with `@action`, `@computed`, `@emits`, and `shard_htmx`.
 
 Combines server state (`items`, `draft`) with Alpine client state (`focused`) and `ActionResult` events.
 
+### ViewPage (view data)
+
+`ViewTreeComponent` subclass that stores a layout descriptor in state. Demonstrates adding/removing cards and toggling the footer while preserving child component state.
+
 ## Example file map
 
 | File                                  | Purpose               |
 | ------------------------------------- | --------------------- |
 | `example/components.py`               | All component classes |
+| `example/demo_view_data.py`           | Demo view-data trees  |
 | `example/templates/home.html`         | Demo page composition |
+| `example/templates/dynamic.html`      | View data demo shell  |
 | `example/templates/components/*.html` | Component templates   |
 | `example/templates/components/*.css`  | Scoped styles         |
 

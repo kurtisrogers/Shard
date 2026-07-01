@@ -16,3 +16,7 @@ class ActionNotFoundError(ShardError):
 
 class StateNotFoundError(ShardError):
     """Raised when component state cannot be loaded for an instance."""
+
+
+class ViewDataError(ShardError):
+    """Raised when view data is invalid or references a disallowed component."""

@@ -1,4 +1,4 @@
-"""Spike: render Shard component trees from structured view data."""
+"""Render Shard component trees from structured view data."""
 
 from __future__ import annotations
 
@@ -8,28 +8,17 @@ from uuid import uuid4
 
 from django.utils.safestring import SafeString
 
-from shard.exceptions import ComponentNotFoundError, StateNotFoundError
+from shard.conf import get_setting
+from shard.exceptions import ComponentNotFoundError, StateNotFoundError, ViewDataError
 from shard.registry import get_component
-from shard.render import mount
 from shard.state import StateStore
 
-ALLOWED_COMPONENTS = frozenset(
-    {
-        "Alert",
-        "Button",
-        "Card",
-        "Counter",
-        "Layout",
-        "TodoList",
-    }
-)
-
-
-class ViewDataError(ValueError):
-    """Raised when view data is invalid or references a disallowed component."""
+TREE_STATE_KEY = "tree"
 
 
 class ViewNode(TypedDict, total=False):
+    """Serializable descriptor for a component in a view-data tree."""
+
     id: str
     component: str
     props: dict[str, Any]
@@ -38,64 +27,23 @@ class ViewNode(TypedDict, total=False):
     content: str
 
 
-DEMO_VIEW_DATA: ViewNode = {
-    "component": "Layout",
-    "slots": {
-        "header": [
-            {
-                "component": "Alert",
-                "props": {"level": "info", "message": "This page was built from view data."},
-            }
-        ],
-        "default": [
-            {
-                "component": "Card",
-                "props": {"title": "Counter"},
-                "children": [
-                    {"component": "Counter", "props": {"initial": 3, "step": 2}},
-                ],
-            },
-            {
-                "component": "Card",
-                "props": {"title": "Todo list"},
-                "children": [
-                    {"component": "TodoList", "props": {"placeholder": "What needs doing?"}},
-                ],
-            },
-            {
-                "component": "Card",
-                "props": {"title": "Wrapped actions"},
-                "children": [
-                    {
-                        "component": "Button",
-                        "props": {"variant": "primary"},
-                        "content": "Primary action",
-                    },
-                    {
-                        "component": "Button",
-                        "props": {"variant": "ghost"},
-                        "content": "Secondary action",
-                    },
-                ],
-            },
-        ],
-        "footer": [
-            {
-                "component": "Alert",
-                "props": {
-                    "level": "success",
-                    "message": "View-data spike — layout mutates via ViewPage actions.",
-                },
-            }
-        ],
-    },
-}
+def resolve_allowed_components(
+    *,
+    allowed_components: frozenset[str] | None = None,
+) -> frozenset[str]:
+    """Resolve the component whitelist for view-data rendering."""
 
+    if allowed_components is not None:
+        return allowed_components
 
-def initial_view_tree() -> ViewNode:
-    """Return a demo tree with stable instance ids for mutable rendering."""
-
-    return ensure_node_ids(copy.deepcopy(DEMO_VIEW_DATA))
+    configured = get_setting("VIEW_DATA_ALLOWED_COMPONENTS")
+    if configured is None:
+        raise ViewDataError(
+            "View data rendering requires an explicit component whitelist. "
+            "Pass allowed_components=... to render_view_data() or set "
+            "SHARD_VIEW_DATA_ALLOWED_COMPONENTS in Django settings."
+        )
+    return frozenset(configured)
 
 
 def ensure_node_ids(node: ViewNode) -> ViewNode:
@@ -118,6 +66,14 @@ def ensure_node_ids(node: ViewNode) -> ViewNode:
     return node
 
 
+def collect_node_ids(node: ViewNode) -> set[str]:
+    """Return every instance id referenced in a view-data tree."""
+
+    ids: set[str] = set()
+    _walk_node_ids(node, ids)
+    return ids
+
+
 def get_slot_nodes(tree: ViewNode, slot_name: str) -> list[ViewNode]:
     """Return the child nodes for a named slot on the tree root."""
 
@@ -134,6 +90,24 @@ def set_slot_nodes(tree: ViewNode, slot_name: str, nodes: list[ViewNode]) -> Vie
     return updated
 
 
+def commit_view_tree(state: dict[str, Any], key: str, tree: ViewNode) -> ViewNode:
+    """Replace a view tree in state and prune cache entries for removed nodes."""
+
+    previous = state.get(key, {})
+    previous_ids = collect_node_ids(previous) if previous else set()
+    updated = ensure_node_ids(tree)
+    prune_orphaned_nodes(previous_ids - collect_node_ids(updated))
+    state[key] = updated
+    return updated
+
+
+def prune_orphaned_nodes(instance_ids: set[str]) -> None:
+    """Delete persisted state for component instances removed from a view tree."""
+
+    for instance_id in instance_ids:
+        StateStore.delete(instance_id)
+
+
 def render_view_data(
     node: ViewNode,
     *,
@@ -143,12 +117,26 @@ def render_view_data(
 ) -> SafeString:
     """Walk a view-data tree and mount Shard components recursively."""
 
+    whitelist = resolve_allowed_components(allowed_components=allowed_components)
     return _render_node(
         node,
         request=request,
-        allowed_components=allowed_components or ALLOWED_COMPONENTS,
+        allowed_components=whitelist,
         stable=stable,
     )
+
+
+def _walk_node_ids(node: ViewNode, ids: set[str]) -> None:
+    node_id = node.get("id")
+    if node_id:
+        ids.add(node_id)
+
+    for child_nodes in (node.get("slots") or {}).values():
+        for child in child_nodes:
+            _walk_node_ids(child, ids)
+
+    for child in node.get("children") or []:
+        _walk_node_ids(child, ids)
 
 
 def _mount_node(

@@ -68,6 +68,7 @@ nav:
       - interactivity/events.md
   - Guides:
       - guides/composition.md
+      - guides/view-data.md
       - guides/computed-values.md
       - guides/lifecycle-hooks.md
       - guides/nested-components.md

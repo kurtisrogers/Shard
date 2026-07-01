@@ -18,6 +18,7 @@ Shard does not ship a widget catalog. It gives you a small, familiar model — c
 - **Events** — HTMX custom events via `@emits` and `ActionResult`
 - **HTMX** — partial re-renders after actions
 - **Alpine.js** — optional client-side behavior inside templates
+- **View data** — optional structured layouts, mutable via `ViewTreeComponent`
 
 ## Quick start
 
