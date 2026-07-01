@@ -12,7 +12,7 @@
       }
       body {
         margin: 0 auto;
-        max-width: 48rem;
+        max-width: 52rem;
         padding: 2rem 1.5rem;
       }
       .demo-stack {
@@ -24,13 +24,16 @@
     {% shard_scripts %}
   </head>
   <body>
-    <h1>Shard</h1>
-    <p>
-      A Django-native component framework. Define components in Python, wrap content
-      with slots, scope styles per component, and wire server state through HTMX.
-    </p>
+    {% component Layout %}
+      {% slot header %}
+        <h1>Shard</h1>
+        <p>A Django-native component framework with props, state, slots, and scoped styles.</p>
+      {% endslot %}
 
-    <div class="demo-stack">
+      {% component Alert level="info" %}
+        Components are defined in Python. Templates, scoped CSS, and slots are yours to author.
+      {% endcomponent %}
+
       {% component Card title="Counter" %}
         {% component Counter initial=3 step=2 %}{% endcomponent %}
       {% endcomponent %}
@@ -48,6 +51,10 @@
           Secondary action
         {% endcomponent %}
       {% endcomponent %}
-    </div>
+
+      {% slot footer %}
+        <small>Shard {{ SHARD.version }} — docs at <a href="https://kurtisrogers.github.io/Shard/">kurtisrogers.github.io/Shard</a></small>
+      {% endslot %}
+    {% endcomponent %}
   </body>
 </html>

@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import json
+from typing import Any
+
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
-from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_POST
 
 from shard.exceptions import ActionNotFoundError, ComponentNotFoundError, StateNotFoundError
 from shard.registry import get_component
@@ -37,7 +40,15 @@ def component_action(request, instance_id: str, action_name: str) -> HttpRespons
         return HttpResponse(str(exc), status=404)
 
     response = HttpResponse(html)
-    response["HX-Trigger"] = "shard:action-complete"
+
+    events: dict[str, Any] = {"shard:action-complete": True}
+    events.update(getattr(component, "pending_events", {}))
+    response["HX-Trigger"] = json.dumps(events)
+
+    redirect = getattr(component, "pending_redirect", None)
+    if redirect:
+        response["HX-Redirect"] = redirect
+
     return response
 
 

@@ -1,8 +1,5 @@
-<article
-  data-shard-scope="{{ shard_scope }}"
-  id="shard-{{ shard_id }}"
-  class="card"
->
+{% load shard %}
+<article {% shard_root component %} class="card">
   {% if props.title %}
     <header class="card__header">{{ props.title }}</header>
   {% endif %}

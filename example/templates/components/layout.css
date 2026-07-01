@@ -1,0 +1,16 @@
+.layout {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.layout__header {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, CanvasText 15%, Canvas);
+}
+
+.layout__footer {
+  padding-top: 0.75rem;
+  border-top: 1px solid color-mix(in srgb, CanvasText 15%, Canvas);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}

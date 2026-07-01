@@ -6,7 +6,9 @@ from typing import Any
 from django import template
 from django.template import TemplateSyntaxError
 from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
 
+from shard.htmx import build_alpine_data, build_htmx_attrs
 from shard.registry import get_component
 from shard.render import render_component
 from shard.slots import DEFAULT_SLOT
@@ -18,6 +20,51 @@ register = template.Library()
 def shard_scripts(context) -> str:
     request = context.get("request")
     return render_to_string("shard/scripts.html", request=request)
+
+
+@register.simple_tag
+def shard_root(component) -> str:
+    return mark_safe(
+        f'id="shard-{component.instance_id}" '
+        f'data-shard-scope="{component.shard_scope}"'
+    )
+
+
+@register.simple_tag
+def shard_action(component, action_name: str) -> str:
+    return component.action_urls().get(action_name, "#")
+
+
+@register.simple_tag
+def shard_htmx(component, action_name: str, swap: str = "outerHTML", target: str = "", trigger: str = "", include: str = "", **vals: Any) -> str:
+    return build_htmx_attrs(
+        component,
+        action_name,
+        swap=swap,
+        target=target or None,
+        trigger=trigger or None,
+        include=include or None,
+        vals=vals or None,
+    )
+
+
+@register.simple_tag
+def shard_alpine(component, **extra: Any) -> str:
+    return build_alpine_data(component, extra or None)
+
+
+@register.simple_tag(takes_context=True)
+def shard_child(context, component_name: str, **props: Any) -> str:
+    """Render a nested component from inside another component template."""
+
+    request = context.get("request")
+    parent = context.get("component")
+    component_cls = get_component(_clean_component_name(component_name))
+    if parent is not None:
+        html = parent.render_child(component_cls, props=props, request=request)
+    else:
+        html = render_component(component_cls, props=props, request=request, persist=True)
+    return mark_safe(html)
 
 
 class SlotNode(template.Node):
@@ -56,7 +103,7 @@ class ComponentNode(template.Node):
             request=request,
             persist=True,
         )
-        return html
+        return mark_safe(html)
 
 
 def _collect_slots(nodelist: template.NodeList, context) -> dict[str, str]:

@@ -1,0 +1,4 @@
+{% load shard %}
+<div {% shard_root component %} class="{{ computed.css_class }}" role="status">
+  {{ slots.default|default:props.message|safe }}
+</div>

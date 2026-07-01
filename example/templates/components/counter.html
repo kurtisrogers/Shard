@@ -1,29 +1,15 @@
-<div
-  data-shard-scope="{{ shard_scope }}"
-  id="shard-{{ shard_id }}"
-  class="counter"
->
+{% load shard %}
+<div {% shard_root component %} class="counter">
   <p class="counter__value">
     <strong>Count:</strong>
     <span>{{ state.count }}</span>
   </p>
+  <p class="counter__label"><small>{{ computed.label }}</small></p>
   <div class="counter__actions">
-    <button
-      type="button"
-      class="counter__btn"
-      hx-post="{{ shard_actions.increment }}"
-      hx-target="#shard-{{ shard_id }}"
-      hx-swap="outerHTML"
-    >
+    <button type="button" class="counter__btn" {% shard_htmx component "increment" %}>
       +{{ props.step }}
     </button>
-    <button
-      type="button"
-      class="counter__btn"
-      hx-post="{{ shard_actions.decrement }}"
-      hx-target="#shard-{{ shard_id }}"
-      hx-swap="outerHTML"
-    >
+    <button type="button" class="counter__btn" {% shard_htmx component "decrement" %}>
       -{{ props.step }}
     </button>
   </div>
