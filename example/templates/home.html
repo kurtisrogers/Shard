@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shard Demo</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+      }
+      body {
+        margin: 0 auto;
+        max-width: 52rem;
+        padding: 2rem 1.5rem;
+      }
+      .demo-stack {
+        display: grid;
+        gap: 1.25rem;
+      }
+    </style>
+    {% load shard %}
+    {% shard_scripts %}
+  </head>
+  <body>
+    {% component Layout %}
+      {% slot header %}
+        <h1>Shard</h1>
+        <p>A Django-native component framework with props, state, slots, and scoped styles.</p>
+      {% endslot %}
+
+      {% component Alert level="info" %}
+        Components are defined in Python. Templates, scoped CSS, and slots are yours to author.
+      {% endcomponent %}
+
+      {% component Card title="Counter" %}
+        {% component Counter initial=3 step=2 %}{% endcomponent %}
+      {% endcomponent %}
+
+      {% component Card title="Todo list" %}
+        {% component TodoList placeholder="What needs doing?" %}{% endcomponent %}
+      {% endcomponent %}
+
+      {% component Card title="Wrapped actions" %}
+        <p>Compose leaf components inside wrappers without global CSS leaks.</p>
+        {% component Button variant="primary" %}
+          Primary action
+        {% endcomponent %}
+        {% component Button variant="ghost" %}
+          Secondary action
+        {% endcomponent %}
+      {% endcomponent %}
+
+      {% slot footer %}
+        <small>Shard {{ SHARD.version }} — docs at <a href="https://kurtisrogers.github.io/Shard/">kurtisrogers.github.io/Shard</a></small>
+      {% endslot %}
+    {% endcomponent %}
+  </body>
+</html>

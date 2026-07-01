@@ -1,0 +1,16 @@
+{% load shard %}
+<div {% shard_root component %} class="counter">
+  <p class="counter__value">
+    <strong>Count:</strong>
+    <span>{{ state.count }}</span>
+  </p>
+  <p class="counter__label"><small>{{ computed.label }}</small></p>
+  <div class="counter__actions">
+    <button type="button" class="counter__btn" {% shard_htmx component "increment" %}>
+      +{{ props.step }}
+    </button>
+    <button type="button" class="counter__btn" {% shard_htmx component "decrement" %}>
+      -{{ props.step }}
+    </button>
+  </div>
+</div>

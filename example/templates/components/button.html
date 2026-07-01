@@ -1,0 +1,4 @@
+{% load shard %}
+<button {% shard_root component %} class="btn btn--{{ props.variant }}" type="{{ props.button_type }}">
+  {{ slots.default|safe }}
+</button>

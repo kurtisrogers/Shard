@@ -1,0 +1,9 @@
+{% load shard %}
+<article {% shard_root component %} class="card">
+  {% if props.title %}
+    <header class="card__header">{{ props.title }}</header>
+  {% endif %}
+  <div class="card__body">
+    {{ slots.default|safe }}
+  </div>
+</article>

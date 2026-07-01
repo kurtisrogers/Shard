@@ -1,0 +1,39 @@
+{% load shard %}
+<div {% shard_root component %} class="todo" {% shard_alpine component %}>
+  <form
+    class="todo__form"
+    {% shard_htmx component "add_item" %}
+    @submit.prevent="$el.requestSubmit()"
+  >
+    <input
+      class="todo__input"
+      type="text"
+      name="text"
+      placeholder="{{ props.placeholder }}"
+      value="{{ state.draft }}"
+      {% shard_htmx component "set_draft" trigger="keyup changed delay:300ms" %}
+      @focus="focused = true"
+      @blur="focused = false"
+    />
+    <button class="todo__submit" type="submit">Add</button>
+  </form>
+
+  {% if state.items %}
+    <ul class="todo__items">
+      {% for item in state.items %}
+        <li class="todo__item">
+          <span>{{ item }}</span>
+            <button
+            type="button"
+            class="todo__remove"
+            {% shard_htmx component "remove_item" index=forloop.counter0 %}
+          >
+            Remove
+          </button>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="todo__empty"><em>No tasks yet.</em></p>
+  {% endif %}
+</div>

@@ -1,0 +1,12 @@
+{% load shard %}
+<div {% shard_root component %} class="layout">
+  <header class="layout__header">
+    {{ slots.header|default:""|safe }}
+  </header>
+  <main class="layout__main">
+    {{ slots.default|safe }}
+  </main>
+  <footer class="layout__footer">
+    {{ slots.footer|default:""|safe }}
+  </footer>
+</div>
