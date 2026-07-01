@@ -44,12 +44,12 @@ Isolated components live in `tests/support/components.py` and are registered aut
 
 The `ci.yml` GitHub Actions workflow runs on every push and pull request:
 
-| Job | What it checks |
-|-----|----------------|
-| **pre-commit** | All hooks in `.pre-commit-config.yaml` |
-| **lint** | `ruff check` and `ruff format --check` |
-| **test** | pytest on Python 3.10, 3.11, 3.12 (≥90% coverage) |
-| **docs** | `mkdocs build --strict` |
+| Job            | What it checks                                    |
+| -------------- | ------------------------------------------------- |
+| **pre-commit** | All hooks in `.pre-commit-config.yaml`            |
+| **lint**       | `ruff check` and `ruff format --check`            |
+| **test**       | pytest on Python 3.10, 3.11, 3.12 (≥90% coverage) |
+| **docs**       | `mkdocs build --strict`                           |
 
 ## Pre-commit
 
