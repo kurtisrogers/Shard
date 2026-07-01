@@ -1,5 +1,3 @@
-import json
-
 from shard.htmx import build_alpine_data, build_htmx_attrs
 from tests.support.components import Stateful, WithClientState
 

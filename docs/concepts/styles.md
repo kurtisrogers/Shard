@@ -40,16 +40,20 @@ At render time, Shard prefixes every selector:
 
 ```css
 /* You write */
-.title { color: red; }
+.title {
+  color: red;
+}
 
 /* Browser receives */
-[data-shard-scope="card"] .title { color: red; }
+[data-shard-scope="card"] .title {
+  color: red;
+}
 ```
 
 Your template root element gets the scope attribute via `{% shard_root component %}`:
 
 ```html
-<article data-shard-scope="card" id="shard-abc123" class="card">
+<article data-shard-scope="card" id="shard-abc123" class="card"></article>
 ```
 
 ## Scope key
@@ -88,7 +92,9 @@ class Card(Component):
 
 ```css
 @media (max-width: 600px) {
-  .card { padding: 0.5rem; }
+  .card {
+    padding: 0.5rem;
+  }
 }
 ```
 

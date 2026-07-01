@@ -50,7 +50,7 @@ document.addEventListener("shard:action-complete", () => {
 ## Listening in Alpine
 
 ```html
-<div @counter:changed.window="onCounterChange()">
+<div @counter:changed.window="onCounterChange()"></div>
 ```
 
 ## Listening in vanilla JS

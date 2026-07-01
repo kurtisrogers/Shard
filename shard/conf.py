@@ -1,6 +1,5 @@
 from django.conf import settings
 
-
 DEFAULTS = {
     "STATE_BACKEND": "cache",
     "STATE_TIMEOUT": 60 * 60 * 24,

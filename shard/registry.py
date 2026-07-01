@@ -51,7 +51,10 @@ def autodiscover_components() -> None:
             value = getattr(module, attr_name)
             if (
                 isinstance(value, type)
-                and issubclass(value, __import__("shard.component", fromlist=["Component"]).Component)
+                and issubclass(
+                    value,
+                    __import__("shard.component", fromlist=["Component"]).Component,
+                )
                 and value.__module__ == module.__name__
             ):
                 register(value)

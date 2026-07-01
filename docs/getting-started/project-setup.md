@@ -62,11 +62,11 @@ Add your app's template directory to `TEMPLATES["DIRS"]` or use `APP_DIRS = True
 
 ## Settings reference
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `SHARD_STATE_TIMEOUT` | `86400` | Seconds to keep component state in cache |
-| `SHARD_URL_NAMESPACE` | `"shard"` | URL namespace for action routes |
-| `SHARD_AUTODISCOVER` | `True` | Import `<app>.components` on startup |
+| Setting               | Default   | Description                              |
+| --------------------- | --------- | ---------------------------------------- |
+| `SHARD_STATE_TIMEOUT` | `86400`   | Seconds to keep component state in cache |
+| `SHARD_URL_NAMESPACE` | `"shard"` | URL namespace for action routes          |
+| `SHARD_AUTODISCOVER`  | `True`    | Import `<app>.components` on startup     |
 
 ## Verify installation
 

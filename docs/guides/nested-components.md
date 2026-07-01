@@ -7,12 +7,8 @@ Render child components from within a parent component's template or Python code
 ```html
 {# components/dashboard.html #}
 <div {% shard_root component %} class="dashboard">
-  <section>
-    {% shard_child "Counter" initial=0 %}
-  </section>
-  <section>
-    {% shard_child "TodoList" placeholder="Tasks..." %}
-  </section>
+  <section>{% shard_child "Counter" initial=0 %}</section>
+  <section>{% shard_child "TodoList" placeholder="Tasks..." %}</section>
 </div>
 ```
 

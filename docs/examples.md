@@ -49,12 +49,12 @@ Combines server state (`items`, `draft`) with Alpine client state (`focused`) an
 
 ## Example file map
 
-| File | Purpose |
-|------|---------|
-| `example/components.py` | All component classes |
-| `example/templates/home.html` | Demo page composition |
-| `example/templates/components/*.html` | Component templates |
-| `example/templates/components/*.css` | Scoped styles |
+| File                                  | Purpose               |
+| ------------------------------------- | --------------------- |
+| `example/components.py`               | All component classes |
+| `example/templates/home.html`         | Demo page composition |
+| `example/templates/components/*.html` | Component templates   |
+| `example/templates/components/*.css`  | Scoped styles         |
 
 ## Try modifying
 

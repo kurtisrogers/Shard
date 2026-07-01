@@ -43,15 +43,15 @@ See the [quickstart guide](https://kurtisrogers.github.io/Shard/getting-started/
 
 ## Documentation
 
-| Topic | Link |
-|-------|------|
-| Installation | [getting-started/installation](https://kurtisrogers.github.io/Shard/getting-started/installation/) |
-| Components | [concepts/components](https://kurtisrogers.github.io/Shard/concepts/components/) |
-| Slots | [concepts/slots](https://kurtisrogers.github.io/Shard/concepts/slots/) |
-| Scoped styles | [concepts/styles](https://kurtisrogers.github.io/Shard/concepts/styles/) |
-| Actions & HTMX | [interactivity/actions](https://kurtisrogers.github.io/Shard/interactivity/actions/) |
-| API reference | [reference/api](https://kurtisrogers.github.io/Shard/reference/api/) |
-| Examples | [examples](https://kurtisrogers.github.io/Shard/examples/) |
+| Topic          | Link                                                                                               |
+| -------------- | -------------------------------------------------------------------------------------------------- |
+| Installation   | [getting-started/installation](https://kurtisrogers.github.io/Shard/getting-started/installation/) |
+| Components     | [concepts/components](https://kurtisrogers.github.io/Shard/concepts/components/)                   |
+| Slots          | [concepts/slots](https://kurtisrogers.github.io/Shard/concepts/slots/)                             |
+| Scoped styles  | [concepts/styles](https://kurtisrogers.github.io/Shard/concepts/styles/)                           |
+| Actions & HTMX | [interactivity/actions](https://kurtisrogers.github.io/Shard/interactivity/actions/)               |
+| API reference  | [reference/api](https://kurtisrogers.github.io/Shard/reference/api/)                               |
+| Examples       | [examples](https://kurtisrogers.github.io/Shard/examples/)                                         |
 
 ## Example app
 
@@ -66,13 +66,14 @@ python manage.py runserver
 
 ```bash
 pip install -e ".[dev]"
+pre-commit install          # optional: run checks before each commit
 python -m pytest tests/ -q
 ```
 
-**60 tests** covering props, state, actions, template tags, HTTP views, scoping, and integration flows. See the [testing guide](https://kurtisrogers.github.io/Shard/guides/testing/) for details.
+**60 tests** with **≥90% coverage**. CI runs pre-commit, Ruff, tests (Python 3.10–3.12), and docs build on every PR.
 
 ```bash
-# Build documentation locally
+pre-commit run --all-files  # lint + format locally
 pip install -e ".[docs]"
 python -m mkdocs serve
 ```

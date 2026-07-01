@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from functools import wraps
-from typing import Any, Callable, ClassVar
+from typing import Any, ClassVar
 from uuid import uuid4
 
 from django.template import Context, Template
@@ -14,7 +15,6 @@ from shard.props import Prop
 from shard.slots import SlotContent
 from shard.state import StateStore
 from shard.styles import component_scope, load_scoped_styles
-
 
 ACTION_MARKER = "__shard_action__"
 COMPUTED_MARKER = "__shard_computed__"
@@ -139,10 +139,7 @@ class Component(metaclass=ComponentMeta):
         return component_scope(self.component_name, self.scope)
 
     def get_computed_data(self) -> dict[str, Any]:
-        return {
-            name: method(self)
-            for name, method in type(self)._computed_fields.items()
-        }
+        return {name: method(self) for name, method in type(self)._computed_fields.items()}
 
     def get_context_data(self) -> dict[str, Any]:
         return {
@@ -186,8 +183,8 @@ class Component(metaclass=ComponentMeta):
     ) -> SafeString:
         """Render a nested child component from Python or templates."""
 
-        from shard.render import render_component
         from shard.registry import get_component
+        from shard.render import render_component
 
         component_cls = get_component(component) if isinstance(component, str) else component
         return render_component(
@@ -198,7 +195,9 @@ class Component(metaclass=ComponentMeta):
             persist=True,
         )
 
-    def dispatch_action(self, action_name: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    def dispatch_action(
+        self, action_name: str, payload: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         handler = getattr(type(self), action_name, None)
         if handler is None or not getattr(handler, ACTION_MARKER, False):
             raise ActionNotFoundError(
@@ -206,9 +205,7 @@ class Component(metaclass=ComponentMeta):
             )
 
         clean_payload = {
-            key: value
-            for key, value in (payload or {}).items()
-            if key not in IGNORED_PAYLOAD_KEYS
+            key: value for key, value in (payload or {}).items() if key not in IGNORED_PAYLOAD_KEYS
         }
 
         self.before_action(action_name, clean_payload)

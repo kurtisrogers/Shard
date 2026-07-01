@@ -42,7 +42,7 @@ Named slot inside a component block.
 Root element attributes for a component instance.
 
 ```html
-<div {% shard_root component %}>
+<div {% shard_root component %}></div>
 ```
 
 Outputs: `id="shard-<id>" data-shard-scope="<scope>"`
@@ -52,7 +52,7 @@ Outputs: `id="shard-<id>" data-shard-scope="<scope>"`
 URL for a specific action.
 
 ```html
-<form action="{% shard_action component 'save' %}">
+<form action="{% shard_action component 'save' %}"></form>
 ```
 
 Prefer `shard_htmx` for most cases.
@@ -63,7 +63,7 @@ Generate HTMX attributes for an action.
 
 ```html
 <button {% shard_htmx component "increment" %}>+</button>
-<button {% shard_htmx component "search" trigger="keyup changed delay:300ms" swap="innerHTML" %}> 
+<button {% shard_htmx component "search" trigger="keyup changed delay:300ms" swap="innerHTML" %}>
 <button {% shard_htmx component "remove" index=forloop.counter0 %}>
 ```
 
@@ -73,7 +73,8 @@ Generate Alpine.js `x-data` from `get_client_state()`.
 
 ```html
 <div {% shard_alpine component %}>
-<div {% shard_alpine component tab="home" %}>
+  <div {% shard_alpine component tab="home" %}></div>
+</div>
 ```
 
 ## shard_child

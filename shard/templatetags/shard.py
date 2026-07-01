@@ -25,8 +25,7 @@ def shard_scripts(context) -> str:
 @register.simple_tag
 def shard_root(component) -> str:
     return mark_safe(
-        f'id="shard-{component.instance_id}" '
-        f'data-shard-scope="{component.shard_scope}"'
+        f'id="shard-{component.instance_id}" data-shard-scope="{component.shard_scope}"'
     )
 
 
@@ -36,7 +35,15 @@ def shard_action(component, action_name: str) -> str:
 
 
 @register.simple_tag
-def shard_htmx(component, action_name: str, swap: str = "outerHTML", target: str = "", trigger: str = "", include: str = "", **vals: Any) -> str:
+def shard_htmx(
+    component,
+    action_name: str,
+    swap: str = "outerHTML",
+    target: str = "",
+    trigger: str = "",
+    include: str = "",
+    **vals: Any,
+) -> str:
     return build_htmx_attrs(
         component,
         action_name,
@@ -91,9 +98,7 @@ class ComponentNode(template.Node):
 
     def render(self, context) -> str:
         request = context.get("request")
-        resolved_props = {
-            name: variable.resolve(context) for name, variable in self.props.items()
-        }
+        resolved_props = {name: variable.resolve(context) for name, variable in self.props.items()}
         slots = _collect_slots(self.nodelist, context)
         component_cls = get_component(self.component_name)
         html = render_component(

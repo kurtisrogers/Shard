@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Type
+from typing import Any
 
 from django.http import HttpRequest
 from django.utils.safestring import SafeString
@@ -31,7 +31,7 @@ def render_component(
 
 
 def mount(
-    component: Type[Component],
+    component: type[Component],
     *,
     props: dict[str, Any] | None = None,
     slots: dict[str, str] | None = None,

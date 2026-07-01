@@ -42,7 +42,9 @@ Or manually:
   hx-post="{{ shard_actions.increment }}"
   hx-target="#shard-{{ shard_id }}"
   hx-swap="outerHTML"
->+</button>
+>
+  +
+</button>
 ```
 
 ## POST parameters

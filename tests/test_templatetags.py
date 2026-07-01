@@ -1,28 +1,19 @@
-import json
-
-import pytest
 from django.template import Context, Template
-from django.test import Client
 
-from shard import mount
-from tests.support.components import Minimal, Stateful, Wrapper
+from tests.support.components import Minimal, Stateful
 
 
 def test_shard_root_tag_renders_attributes():
     component = Minimal(props={"label": "x"})
-    template = Template(
-        "{% load shard %}<div {% shard_root component %}></div>"
-    )
+    template = Template("{% load shard %}<div {% shard_root component %}></div>")
     html = template.render(Context({"component": component}))
-    assert f'shard-{component.instance_id}' in html
+    assert f"shard-{component.instance_id}" in html
     assert "data-shard-scope" in html
 
 
 def test_shard_htmx_tag_renders_post_attrs():
     component = Stateful(props={"count": 0})
-    template = Template(
-        "{% load shard %}<button {% shard_htmx component 'bump' %}></button>"
-    )
+    template = Template("{% load shard %}<button {% shard_htmx component 'bump' %}></button>")
     html = template.render(Context({"component": component}))
     assert "hx-post=" in html
     assert "hx-target=" in html
@@ -32,9 +23,7 @@ def test_shard_alpine_tag():
     from tests.support.components import WithClientState
 
     component = WithClientState()
-    template = Template(
-        "{% load shard %}<div {% shard_alpine component %}></div>"
-    )
+    template = Template("{% load shard %}<div {% shard_alpine component %}></div>")
     html = template.render(Context({"component": component}))
     assert "x-data=" in html
 

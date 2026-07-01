@@ -11,3 +11,4 @@ htmlcov/
 .venv/
 venv/
 site/
+node_modules/

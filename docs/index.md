@@ -6,14 +6,14 @@ Shard is a **framework**, not a widget library. It does not ship pre-built compo
 
 ## What you get
 
-| Feature | Description |
-|---------|-------------|
-| **Props** | Typed inputs declared on Python component classes |
-| **State** | Server-owned data updated via `@action` methods |
-| **Slots** | Wrap and compose markup like `children` / Vue slots |
+| Feature           | Description                                                   |
+| ----------------- | ------------------------------------------------------------- |
+| **Props**         | Typed inputs declared on Python component classes             |
+| **State**         | Server-owned data updated via `@action` methods               |
+| **Slots**         | Wrap and compose markup like `children` / Vue slots           |
 | **Scoped styles** | Co-located `.css` files, automatically prefixed per component |
-| **HTMX** | Partial re-renders after server actions |
-| **Alpine.js** | Optional client-side behavior inside templates |
+| **HTMX**          | Partial re-renders after server actions                       |
+| **Alpine.js**     | Optional client-side behavior inside templates                |
 
 ## Quick example
 

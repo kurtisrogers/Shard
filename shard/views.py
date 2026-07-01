@@ -7,7 +7,11 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAll
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_POST
 
-from shard.exceptions import ActionNotFoundError, ComponentNotFoundError, StateNotFoundError
+from shard.exceptions import (
+    ActionNotFoundError,
+    ComponentNotFoundError,
+    StateNotFoundError,
+)
 from shard.registry import get_component
 from shard.render import resolve_and_render
 from shard.state import StateStore

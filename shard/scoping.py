@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import re
-from typing import Iterable
-
 
 _AT_RULES = frozenset({"media", "supports", "layer"})
 

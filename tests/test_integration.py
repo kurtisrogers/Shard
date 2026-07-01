@@ -6,10 +6,9 @@ import pytest
 from django.core.management import call_command
 from django.test import Client
 
-from example.components import Alert, Button, Card, Counter, Layout, TodoList
+from example.components import Alert, Button, Counter, Layout, TodoList
 from shard import mount
 from shard.slots import SlotContent
-
 
 pytestmark = pytest.mark.django_db
 

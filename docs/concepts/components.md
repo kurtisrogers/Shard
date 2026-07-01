@@ -15,29 +15,29 @@ class Alert(Component):
 
 ## Class attributes
 
-| Attribute | Purpose |
-|-----------|---------|
-| `template_name` | Django template path (required) |
-| `component_name` | Registry name (defaults to class name) |
-| `scope` | Override scoped CSS key (defaults to component name) |
-| `stylesheets` | Explicit list of CSS template paths |
-| `styles` | Inline CSS string (alternative to `.css` file) |
-| `scoped_styles` | Set `False` to disable auto-scoping |
+| Attribute        | Purpose                                              |
+| ---------------- | ---------------------------------------------------- |
+| `template_name`  | Django template path (required)                      |
+| `component_name` | Registry name (defaults to class name)               |
+| `scope`          | Override scoped CSS key (defaults to component name) |
+| `stylesheets`    | Explicit list of CSS template paths                  |
+| `styles`         | Inline CSS string (alternative to `.css` file)       |
+| `scoped_styles`  | Set `False` to disable auto-scoping                  |
 
 ## Template context
 
 Every component template receives:
 
-| Variable | Type | Description |
-|----------|------|-------------|
-| `component` | `Component` | The component instance |
-| `props` | `dict` | Resolved prop values |
-| `state` | `dict` | Current server state |
-| `computed` | `dict` | Values from `@computed` methods |
-| `slots` | `dict` | Rendered slot HTML by name |
-| `shard_id` | `str` | Unique instance identifier |
-| `shard_scope` | `str` | CSS scope key |
-| `shard_actions` | `dict` | Action name → URL mapping |
+| Variable        | Type        | Description                     |
+| --------------- | ----------- | ------------------------------- |
+| `component`     | `Component` | The component instance          |
+| `props`         | `dict`      | Resolved prop values            |
+| `state`         | `dict`      | Current server state            |
+| `computed`      | `dict`      | Values from `@computed` methods |
+| `slots`         | `dict`      | Rendered slot HTML by name      |
+| `shard_id`      | `str`       | Unique instance identifier      |
+| `shard_scope`   | `str`       | CSS scope key                   |
+| `shard_actions` | `dict`      | Action name → URL mapping       |
 
 ## Prop access in Python
 

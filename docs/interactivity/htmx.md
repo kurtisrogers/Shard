@@ -35,8 +35,7 @@ Generates common HTMX attributes:
 Outputs:
 
 ```html
-hx-post="/shard/action/abc123/increment/"
-hx-target="#shard-abc123"
+hx-post="/shard/action/abc123/increment/" hx-target="#shard-abc123"
 hx-swap="outerHTML"
 ```
 
@@ -46,21 +45,21 @@ hx-swap="outerHTML"
 <button {% shard_htmx component "search" trigger="keyup changed delay:300ms" swap="innerHTML" %}>
 ```
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `swap` | `outerHTML` | HTMX swap strategy |
-| `target` | `#shard-<id>` | Target selector |
-| `trigger` | (none) | HTMX trigger expression |
-| `include` | (none) | `hx-include` selector |
-| `**vals` | (none) | Extra POST values as `hx-vals` |
+| Option    | Default       | Description                    |
+| --------- | ------------- | ------------------------------ |
+| `swap`    | `outerHTML`   | HTMX swap strategy             |
+| `target`  | `#shard-<id>` | Target selector                |
+| `trigger` | (none)        | HTMX trigger expression        |
+| `include` | (none)        | `hx-include` selector          |
+| `**vals`  | (none)        | Extra POST values as `hx-vals` |
 
 ## Swap strategies
 
-| Strategy | Use when |
-|----------|----------|
+| Strategy    | Use when                                 |
+| ----------- | ---------------------------------------- |
 | `outerHTML` | Replacing the entire component (default) |
 | `innerHTML` | Updating content inside the root element |
-| `beforeend` | Appending to a list |
+| `beforeend` | Appending to a list                      |
 
 For `innerHTML` swaps, put `{% shard_root component %}` on a wrapper and target a child:
 
@@ -79,7 +78,7 @@ For `innerHTML` swaps, put `{% shard_root component %}` on a wrapper and target 
 Every action response includes an `HX-Trigger` header:
 
 ```json
-{"shard:action-complete": true, "counter:changed": true}
+{ "shard:action-complete": true, "counter:changed": true }
 ```
 
 Listen in Alpine or vanilla JS:

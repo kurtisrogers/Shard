@@ -23,11 +23,11 @@ Computed values are recalculated on every render. They are not persisted.
 
 ## When to use computed
 
-| Use computed | Use state |
-|--------------|-----------|
-| Formatted display strings | Values that change via actions |
-| CSS class names from props | Lists, counters, drafts |
-| Derived booleans | Anything HTMX actions modify |
+| Use computed               | Use state                      |
+| -------------------------- | ------------------------------ |
+| Formatted display strings  | Values that change via actions |
+| CSS class names from props | Lists, counters, drafts        |
+| Derived booleans           | Anything HTMX actions modify   |
 
 ## Example: dynamic CSS class
 

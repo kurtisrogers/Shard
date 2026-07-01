@@ -95,7 +95,7 @@ Check before rendering:
 
 ```html
 {% if slots.header %}
-  <header>{{ slots.header|safe }}</header>
+<header>{{ slots.header|safe }}</header>
 {% endif %}
 ```
 

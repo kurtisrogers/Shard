@@ -22,11 +22,11 @@ Props can seed initial state, but state itself is mutable.
 <p>Count: {{ state.count }}</p>
 
 {% if state.items %}
-  <ul>
-    {% for item in state.items %}
-      <li>{{ item }}</li>
-    {% endfor %}
-  </ul>
+<ul>
+  {% for item in state.items %}
+  <li>{{ item }}</li>
+  {% endfor %}
+</ul>
 {% endif %}
 ```
 

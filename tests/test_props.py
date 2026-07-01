@@ -2,7 +2,8 @@ import pytest
 
 from shard import Component, Prop, mount
 from shard.exceptions import PropValidationError
-from shard.props import Prop as PropClass, coerce
+from shard.props import Prop as PropClass
+from shard.props import coerce
 
 
 class TypedComponent(Component):

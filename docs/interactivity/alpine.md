@@ -4,11 +4,11 @@ Alpine.js is bundled for client-side interactivity that doesn't need a server ro
 
 ## When to use Alpine
 
-| Use Alpine for | Use HTMX/@action for |
-|----------------|----------------------|
-| Toggle visibility | Persisting data |
-| Focus management | Validation with server rules |
-| Animations | Lists, counters, form state |
+| Use Alpine for      | Use HTMX/@action for               |
+| ------------------- | ---------------------------------- |
+| Toggle visibility   | Persisting data                    |
+| Focus management    | Validation with server rules       |
+| Animations          | Lists, counters, form state        |
 | Client-only filters | Anything that must survive refresh |
 
 ## Seeding Alpine state
@@ -24,16 +24,14 @@ class Dropdown(Component):
 ```html
 <div {% shard_alpine component %}>
   <button @click="open = !open">Menu</button>
-  <div x-show="open" x-transition>
-    {{ slots.default|safe }}
-  </div>
+  <div x-show="open" x-transition>{{ slots.default|safe }}</div>
 </div>
 ```
 
 ## shard_alpine tag
 
 ```html
-<div {% shard_alpine component %}>
+<div {% shard_alpine component %}></div>
 ```
 
 Outputs:
@@ -45,7 +43,7 @@ x-data='{"open": false}'
 Pass extra keys:
 
 ```html
-<div {% shard_alpine component tab="settings" %}>
+<div {% shard_alpine component tab="settings" %}></div>
 ```
 
 ## Combining Alpine and HTMX
@@ -70,10 +68,7 @@ Alpine handles immediate UI feedback. HTMX handles persistence:
 Action responses trigger HTMX events. Listen with Alpine:
 
 ```html
-<div
-  {% shard_alpine component %}
-  @todo:added.window="focused = false"
->
+<div {% shard_alpine component %} @todo:added.window="focused = false"></div>
 ```
 
 Or in `shard.js` / your own scripts:

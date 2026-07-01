@@ -15,19 +15,19 @@ Base class for all components.
 
 ### Methods
 
-| Method | Description |
-|--------|-------------|
-| `get_initial_state()` | Return initial state dict |
-| `get_client_state()` | Return Alpine.js seed data |
-| `get_context_data()` | Template context dict |
-| `get_computed_data()` | Computed values dict |
-| `render(request=None)` | Render component to HTML |
-| `render_child(component, props=, slots=, request=)` | Render nested component |
-| `dispatch_action(name, payload)` | Run action handler |
-| `persist()` | Save to cache |
-| `action_urls()` | Dict of action URLs |
-| `before_action(name, payload)` | Lifecycle hook |
-| `after_action(name, state)` | Lifecycle hook |
+| Method                                              | Description                |
+| --------------------------------------------------- | -------------------------- |
+| `get_initial_state()`                               | Return initial state dict  |
+| `get_client_state()`                                | Return Alpine.js seed data |
+| `get_context_data()`                                | Template context dict      |
+| `get_computed_data()`                               | Computed values dict       |
+| `render(request=None)`                              | Render component to HTML   |
+| `render_child(component, props=, slots=, request=)` | Render nested component    |
+| `dispatch_action(name, payload)`                    | Run action handler         |
+| `persist()`                                         | Save to cache              |
+| `action_urls()`                                     | Dict of action URLs        |
+| `before_action(name, payload)`                      | Lifecycle hook             |
+| `after_action(name, state)`                         | Lifecycle hook             |
 
 ### Properties
 

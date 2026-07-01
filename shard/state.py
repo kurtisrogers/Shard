@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from typing import Any
 
 from django.core.cache import cache
 from django.core.serializers.json import DjangoJSONEncoder
-import json
 
 from shard.conf import get_setting
 from shard.exceptions import StateNotFoundError

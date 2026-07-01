@@ -41,11 +41,11 @@ html = self.render_child("Counter", props={"initial": 5})
 
 ## When to nest where
 
-| Approach | Best for |
-|----------|----------|
-| Slots in page template | Page-specific composition |
-| `{% shard_child %}` in component template | Fixed child structure |
-| `render_child()` in Python | Dynamic children based on props/state |
+| Approach                                  | Best for                              |
+| ----------------------------------------- | ------------------------------------- |
+| Slots in page template                    | Page-specific composition             |
+| `{% shard_child %}` in component template | Fixed child structure                 |
+| `render_child()` in Python                | Dynamic children based on props/state |
 
 ## Avoiding deep nesting
 
