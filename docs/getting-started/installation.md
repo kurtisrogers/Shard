@@ -5,6 +5,18 @@
 - Python 3.10+
 - Django 4.2+
 
+## Install from PyPI
+
+```bash
+pip install shrd
+```
+
+Requires Python 3.10+ and Django 4.2+. The import name is `shard`:
+
+```python
+INSTALLED_APPS = ["shard", ...]
+```
+
 ## Install from source
 
 ```bash

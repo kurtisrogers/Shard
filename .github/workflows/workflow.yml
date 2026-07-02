@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  pypi-publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify tag matches package version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          VERSION=$(python -c "import pathlib, re; text=pathlib.Path('pyproject.toml').read_text(); print(re.search(r'^version = \"([^\"]+)\"', text, re.M).group(1))")
+          test "$TAG" = "$VERSION" || (echo "Tag v$TAG does not match pyproject.toml version $VERSION" && exit 1)
+
+      - name: Install build tools
+        run: pip install build twine
+
+      - name: Build package
+        run: python -m build
+
+      - name: Validate distribution
+        run: twine check dist/*
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
