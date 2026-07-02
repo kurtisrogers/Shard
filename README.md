@@ -59,6 +59,15 @@ See the [quickstart guide](https://kurtisrogers.github.io/Shard/getting-started/
 ## Example app
 
 ```bash
+pip install shrd[dev]
+cd example
+python manage.py migrate
+python manage.py runserver
+```
+
+Or install from source:
+
+```bash
 pip install -e ".[dev]"
 cd example
 python manage.py migrate
@@ -74,7 +83,7 @@ python -m pytest tests/ -q
 python manage.py shard_report   # framework size / page-load weight
 ```
 
-**60 tests** with **≥90% coverage**. CI runs pre-commit, Ruff, tests (Python 3.10–3.12), and docs build on every PR.
+**96 tests** with **≥90% coverage**. CI runs pre-commit, Ruff, tests (Python 3.10–3.12), and docs build on every PR.
 
 ```bash
 pre-commit run --all-files  # lint + format locally
