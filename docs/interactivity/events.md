@@ -1,6 +1,6 @@
 # Events
 
-Shard supports HTMX custom events for decoupled communication between components and page-level scripts.
+Shrd supports HTMX custom events for decoupled communication between components and page-level scripts.
 
 ## Declaring events
 
@@ -78,4 +78,4 @@ Use namespaced events to avoid collisions:
 - `todo:added`
 - `form:saved`
 
-Shard does not enforce a schema — choose conventions that fit your app.
+Shrd does not enforce a schema — choose conventions that fit your app.

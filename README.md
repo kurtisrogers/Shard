@@ -1,14 +1,18 @@
-# Shard
+# Shrd
 
 A Django-native component framework for building UI with **props**, **server state**, **slots**, and **scoped styles** — using only the Django ecosystem plus bundled HTMX and Alpine.js.
 
+```bash
+pip install shrd
+```
+
 📖 **[Full documentation](https://kurtisrogers.github.io/Shard/)**
 
-Shard is a framework, not a drop-in library. Your Django project adopts its conventions: components live in your apps, templates sit beside scoped CSS, and HTMX carries server actions.
+Shrd is a framework, not a drop-in library. Your Django project adopts its conventions: components live in your apps, templates sit beside scoped CSS, and HTMX carries server actions.
 
 ## Philosophy
 
-Shard does not ship a widget catalog. It gives you a small, familiar model — closer to React/Vue than to Django templates alone — without a build step or SPA complexity:
+Shrd does not ship a widget catalog. It gives you a small, familiar model — closer to React/Vue than to Django templates alone — without a build step or SPA complexity:
 
 - **Props** — typed inputs declared on a Python class
 - **State** — server-owned data updated via `@action` methods

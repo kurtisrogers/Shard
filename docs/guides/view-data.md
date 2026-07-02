@@ -1,6 +1,6 @@
 # View data
 
-Build and mutate page layouts from structured data instead of hand-authored templates. View data describes a tree of registered Shard components; the framework walks that tree, mounts each node, and preserves child state across layout changes.
+Build and mutate page layouts from structured data instead of hand-authored templates. View data describes a tree of registered Shrd components; the framework walks that tree, mounts each node, and preserves child state across layout changes.
 
 Use view data when:
 

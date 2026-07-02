@@ -1,4 +1,4 @@
-site_name: Shard
+site_name: Shrd
 site_description: A Django-native component framework with props, state, slots, and scoped styles.
 site_url: https://kurtisrogers.github.io/Shard/
 repo_url: https://github.com/kurtisrogers/Shard

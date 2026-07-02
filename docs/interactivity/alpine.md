@@ -65,7 +65,7 @@ Alpine handles immediate UI feedback. HTMX handles persistence:
 </div>
 ```
 
-## Listening for Shard events
+## Listening for Shrd events
 
 Action responses trigger HTMX events. Listen with Alpine:
 
@@ -153,7 +153,7 @@ The `.window` modifier listens for events HTMX dispatches on `document`.
 
 ## Shared and global state
 
-`{% shard_alpine %}` seeds **per-component** `x-data` from `get_client_state()`. Shard does not ship a global Alpine store.
+`{% shard_alpine %}` seeds **per-component** `x-data` from `get_client_state()`. Shrd does not ship a global Alpine store.
 
 | Need                         | Use                                                                 |
 | ---------------------------- | ------------------------------------------------------------------- |

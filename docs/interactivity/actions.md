@@ -121,4 +121,4 @@ Actions require:
 - `HX-Request` header
 - Valid CSRF token (Django's CSRF middleware)
 
-Shard does not expose GET endpoints for state mutation.
+Shrd does not expose GET endpoints for state mutation.

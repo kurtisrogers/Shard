@@ -41,7 +41,7 @@ def increment(self, state):
     return state
 ```
 
-Shard persists the returned dict and re-renders the component.
+Shrd persists the returned dict and re-renders the component.
 
 ## State persistence
 
@@ -83,7 +83,7 @@ def get_client_state(self):
 
 Keep server state for data that must survive HTMX round-trips. Use client state for ephemeral UI on a single component.
 
-For shared UI across components or the whole page, see [Shared and global client state](../guides/htmx-and-alpine.md#shared-and-global-client-state). Shard does not provide a framework global Alpine store — use HTMX events, parent `x-data`, or `Alpine.store()` in your app.
+For shared UI across components or the whole page, see [Shared and global client state](../guides/htmx-and-alpine.md#shared-and-global-client-state). Shrd does not provide a framework global Alpine store — use HTMX events, parent `x-data`, or `Alpine.store()` in your app.
 
 ## Slots in state
 
