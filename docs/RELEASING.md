@@ -1,6 +1,6 @@
 # Releasing
 
-Shard is published to PyPI as [`shrd`](https://pypi.org/project/shrd/). The Python import name is `shard`.
+Shrd is published to PyPI as [`shrd`](https://pypi.org/project/shrd/). The Python import name is `shard`.
 
 ## Prerequisites
 

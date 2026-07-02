@@ -36,7 +36,7 @@ Use for:
 
 ## Render lifecycle
 
-Shard does not currently expose `before_render` / `after_render` hooks. Override `render()` on your component subclass if you need custom render behavior:
+Shrd does not currently expose `before_render` / `after_render` hooks. Override `render()` on your component subclass if you need custom render behavior:
 
 ```python
 def render(self, request=None):

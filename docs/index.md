@@ -1,8 +1,12 @@
-# Shard
+# Shrd
 
-**Shard** is a Django-native component framework. It gives you a familiar model for building UI — props, state, slots, scoped styles — without leaving the Django ecosystem or adding a JavaScript build step.
+**Shrd** is a Django-native component framework. It gives you a familiar model for building UI — props, state, slots, scoped styles — without leaving the Django ecosystem or adding a JavaScript build step.
 
-Shard is a **framework**, not a widget library. It does not ship pre-built components. Instead, it provides conventions and primitives so you can author your own components the way you would in React or Vue, but lighter and less opinionated.
+```bash
+pip install shrd
+```
+
+Shrd is a **framework**, not a widget library. It does not ship pre-built components. Instead, it provides conventions and primitives so you can author your own components the way you would in React or Vue, but lighter and less opinionated.
 
 ## What you get
 
@@ -36,11 +40,11 @@ class Card(Component):
 {% endcomponent %}
 ```
 
-## Why Shard?
+## Why Shrd?
 
 Django templates are great for rendering pages, but they lack a first-class component model. Most teams reach for React or Vue SPAs, which introduces a separate build pipeline, API boundaries, and operational complexity.
 
-Shard keeps you in Django:
+Shrd keeps you in Django:
 
 - Components are Python classes in your apps
 - Templates are standard Django templates

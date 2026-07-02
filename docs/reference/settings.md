@@ -1,6 +1,6 @@
 # Settings
 
-All Shard settings use the `SHARD_` prefix in Django settings.
+All Shrd settings use the `SHARD_` prefix in Django settings.
 
 ## SHARD_STATE_TIMEOUT
 
@@ -26,7 +26,7 @@ SHARD_URL_NAMESPACE = "shard"
 
 **Default:** `True`
 
-When `True`, Shard imports `<app>.components` for every installed app at startup.
+When `True`, Shrd imports `<app>.components` for every installed app at startup.
 
 ```python
 SHARD_AUTODISCOVER = False  # manual registration only
@@ -92,7 +92,7 @@ SHARD = {
 
 ## Cache configuration
 
-Shard uses Django's default cache. For production:
+Shrd uses Django's default cache. For production:
 
 ```python
 CACHES = {
@@ -109,4 +109,4 @@ CACHES = {
 STATIC_URL = "static/"
 ```
 
-Run `python manage.py collectstatic` in production. Shard assets are under `shard/static/shard/`.
+Run `python manage.py collectstatic` in production. Shrd assets are under `shard/static/shard/`.

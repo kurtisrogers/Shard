@@ -1,6 +1,6 @@
 # HTMX integration
 
-Shard is built around HTMX for server-driven UI updates. HTMX is bundled — no CDN or npm install needed.
+Shrd is built around HTMX for server-driven UI updates. HTMX is bundled — no CDN or npm install needed.
 
 For a full walkthrough with examples, see [Working with HTMX and Alpine](../guides/htmx-and-alpine.md).
 
@@ -18,7 +18,7 @@ This loads `htmx.min.js`, `alpine.min.js`, and a small `shard.js` glue file.
 ```
 User click
   → HTMX POST /shard/action/<instance_id>/<action>/
-  → Shard loads state from cache
+  → Shrd loads state from cache
   → @action method runs
   → State saved
   → Component re-rendered
@@ -152,7 +152,7 @@ class Counter(Component):
 </div>
 ```
 
-**On click:** HTMX POSTs to `/shard/action/<id>/increment/`, Shard runs the action, re-renders the component, and swaps `#shard-<id>` with the new HTML.
+**On click:** HTMX POSTs to `/shard/action/<id>/increment/`, Shrd runs the action, re-renders the component, and swaps `#shard-<id>` with the new HTML.
 
 See `example/templates/components/counter.html` in the repository.
 

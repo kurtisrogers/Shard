@@ -23,7 +23,7 @@ Multi-slot page shell with `header`, default, and `footer` slots.
 
 ```django
 {% component Layout %}
-  {% slot header %}<h1>Shard</h1>{% endslot %}
+  {% slot header %}<h1>Shrd</h1>{% endslot %}
   ...
   {% slot footer %}<small>Footer</small>{% endslot %}
 {% endcomponent %}

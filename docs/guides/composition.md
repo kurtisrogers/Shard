@@ -1,6 +1,6 @@
 # Composition
 
-Shard components compose through slots and nesting.
+Shrd components compose through slots and nesting.
 
 ## Wrapper + leaf pattern
 

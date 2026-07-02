@@ -1,6 +1,6 @@
 # Working with HTMX and Alpine
 
-Shard uses **HTMX** for server-driven updates and **Alpine.js** for client-side UI that does not need a round-trip. Both are bundled as static files — no npm, no build step.
+Shrd uses **HTMX** for server-driven updates and **Alpine.js** for client-side UI that does not need a round-trip. Both are bundled as static files — no npm, no build step.
 
 This guide walks through how developers actually build interactive components: the workflow, when to reach for each tool, and full examples from the repository.
 
@@ -125,7 +125,7 @@ hx-post="/shard/action/<instance_id
 >
 ```
 
-HTMX POSTs to Shard, the `increment` action runs, state is saved, the component re-renders, and HTMX replaces the entire `#shard-<id>` element with the new HTML. The count in the response always matches server state.
+HTMX POSTs to Shrd, the `increment` action runs, state is saved, the component re-renders, and HTMX replaces the entire `#shard-<id>` element with the new HTML. The count in the response always matches server state.
 
 ### 4. Mount on a page
 
@@ -275,9 +275,9 @@ You could also use `:class="{ 'is-focused': focused }"` for visual feedback driv
 
 ## Shared and global client state
 
-Shard seeds Alpine state **per component** via `get_client_state()` and `{% shard_alpine %}`. There is no built-in global Alpine store — that is intentional. The server remains the source of truth; Alpine handles local UI chrome.
+Shrd seeds Alpine state **per component** via `get_client_state()` and `{% shard_alpine %}`. There is no built-in global Alpine store — that is intentional. The server remains the source of truth; Alpine handles local UI chrome.
 
-### What Shard provides
+### What Shrd provides
 
 | Need                                | Mechanism                                   |
 | ----------------------------------- | ------------------------------------------- |
@@ -288,13 +288,13 @@ Shard seeds Alpine state **per component** via `get_client_state()` and `{% shar
 
 ### Why not a framework global Alpine store?
 
-A Shard-managed global client store would introduce a second state graph that:
+A Shrd-managed global client store would introduce a second state graph that:
 
 - Does not sync automatically with server `state` after HTMX re-renders
 - Survives `outerHTML` swaps differently from per-component `x-data` (sometimes useful, often a source of stale UI)
-- Encourages SPA-style patterns Shard deliberately avoids
+- Encourages SPA-style patterns Shrd deliberately avoids
 
-For shared client UI, use one of the patterns below in **your app code**. Shard documents them; it does not need to own them.
+For shared client UI, use one of the patterns below in **your app code**. Shrd documents them; it does not need to own them.
 
 ### Decision guide
 
@@ -365,7 +365,7 @@ def alpine_layout(request):
 </body>
 ```
 
-This is standard Django → template → Alpine. Shard does not wrap it because your app owns what belongs at page scope.
+This is standard Django → template → Alpine. Shrd does not wrap it because your app owns what belongs at page scope.
 
 ### Pattern 4: `Alpine.store()` for app-wide reactivity
 

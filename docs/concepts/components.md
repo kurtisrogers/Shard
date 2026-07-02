@@ -1,6 +1,6 @@
 # Components
 
-A Shard component is a Python class that ties together props, optional server state, a template, and optional scoped CSS.
+A Shrd component is a Python class that ties together props, optional server state, a template, and optional scoped CSS.
 
 ## Defining a component
 
@@ -55,7 +55,7 @@ class Counter(Component):
 
 ## Root element convention
 
-Component templates that use Shard tags must load the library:
+Component templates that use Shrd tags must load the library:
 
 ```django
 {% load shard %}

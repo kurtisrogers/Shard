@@ -1,4 +1,4 @@
-"""Shard — a Django-native component framework."""
+"""Shrd — a Django-native component framework."""
 
 from shard.actions import ActionResult
 from shard.component import Component, action, computed, emits

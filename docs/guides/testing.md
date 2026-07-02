@@ -1,12 +1,12 @@
 # Testing
 
-Shard works well with **pytest** and **pytest-django**. You do not need a browser, Selenium, or a JavaScript test runner — components render server-side and actions are plain HTTP requests.
+Shrd works well with **pytest** and **pytest-django**. You do not need a browser, Selenium, or a JavaScript test runner — components render server-side and actions are plain HTTP requests.
 
-This guide covers testing **your Django project** that uses Shard. For running the Shard framework's own test suite, see [Framework development](#framework-development) at the bottom.
+This guide covers testing **your Django project** that uses Shrd. For running the Shrd framework's own test suite, see [Framework development](#framework-development) at the bottom.
 
 ## Prerequisites
 
-Before writing tests, confirm your project has the same pieces Shard needs at runtime:
+Before writing tests, confirm your project has the same pieces Shrd needs at runtime:
 
 | Requirement                             | Why                                                               |
 | --------------------------------------- | ----------------------------------------------------------------- |
@@ -36,7 +36,7 @@ In your project:
 pip install pytest pytest-django
 ```
 
-You do **not** need Shard's development extras unless you are contributing to the framework itself.
+You do **not** need Shrd's development extras unless you are contributing to the framework itself.
 
 ## pytest configuration
 
@@ -204,7 +204,7 @@ def test_increment_action_via_htmx(client, shard_instance_id):
 
 Important details:
 
-- Set `HTTP_HX_REQUEST="true"` — Shard rejects non-HTMX action requests with **400**
+- Set `HTTP_HX_REQUEST="true"` — Shrd rejects non-HTMX action requests with **400**
 - Mount the component first so state exists in cache before posting to the action URL
 - Parse `HX-Trigger` to assert `@emits` events
 
@@ -262,12 +262,12 @@ def test_invalid_prop_type_raises():
 
 ## What you usually do not need
 
-| Often unnecessary        | Why                                          |
-| ------------------------ | -------------------------------------------- |
-| `@pytest.mark.django_db` | Shard state lives in cache, not the database |
-| Browser / Playwright     | No client-side framework to hydrate          |
-| Mocking HTMX             | Post to Django URLs with `HTTP_HX_REQUEST`   |
-| Separate frontend build  | Templates render server-side in tests        |
+| Often unnecessary        | Why                                         |
+| ------------------------ | ------------------------------------------- |
+| `@pytest.mark.django_db` | Shrd state lives in cache, not the database |
+| Browser / Playwright     | No client-side framework to hydrate         |
+| Mocking HTMX             | Post to Django URLs with `HTTP_HX_REQUEST`  |
+| Separate frontend build  | Templates render server-side in tests       |
 
 Add `django_db` only when your components or views touch the ORM.
 
@@ -296,7 +296,7 @@ myproject/
 
 ## Framework development
 
-This section is for contributors working on the Shard package itself.
+This section is for contributors working on the Shrd package itself.
 
 ### Run the framework test suite
 
