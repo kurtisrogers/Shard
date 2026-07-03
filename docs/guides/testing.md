@@ -65,17 +65,12 @@ Create `tests/conftest.py` in your project:
 ```python
 import pytest
 
-from myapp.components import Counter  # only if you disable autodiscover
+from shard.testing import extract_instance_id
 
 
 @pytest.fixture
 def shard_instance_id():
-    """Extract a mounted component's instance ID from rendered HTML."""
-
-    def _extract(html: str) -> str:
-        return html.split('id="shard-')[1].split('"')[0]
-
-    return _extract
+  return extract_instance_id
 
 
 @pytest.fixture(autouse=True)
@@ -110,12 +105,12 @@ def register_components():
 
 ## Three ways to test
 
-### 1. Render HTML with `mount()`
+### 1. Render HTML with `mount()` or `mount_component()`
 
 Fastest way to test templates, props, slots, scoped CSS, and computed values. No HTTP required.
 
 ```python
-from shard import mount
+from shard import mount, mount_component
 
 from myapp.components import Counter, Card
 
@@ -124,6 +119,13 @@ def test_counter_renders_initial_count():
     html = mount(Counter, props={"initial": 5, "step": 1})
     assert "Current count is 5" in html
     assert 'data-shard-scope="counter"' in html
+
+
+def test_mount_component_returns_instance_metadata():
+    result = mount_component(Counter, props={"initial": 3, "step": 1})
+    assert result.instance_id
+    assert result.component.state["count"] == 3
+    assert "Current count is 3" in result.html
 
 
 def test_card_renders_slot_content():
@@ -175,7 +177,8 @@ import json
 import pytest
 from django.test import Client
 
-from shard import mount
+from shard import mount_component
+from shard.testing import post_action
 
 from myapp.components import Counter
 
@@ -186,13 +189,9 @@ def client():
 
 
 def test_increment_action_via_htmx(client, shard_instance_id):
-    html = mount(Counter, props={"initial": 1, "step": 2})
-    instance_id = shard_instance_id(html)
+    result = mount_component(Counter, props={"initial": 1, "step": 2})
 
-    response = client.post(
-        f"/shard/action/{instance_id}/increment/",
-        HTTP_HX_REQUEST="true",
-    )
+    response = post_action(client, result.instance_id, "increment")
 
     assert response.status_code == 200
     assert "Current count is 3" in response.content.decode()
@@ -200,6 +199,20 @@ def test_increment_action_via_htmx(client, shard_instance_id):
     events = json.loads(response["HX-Trigger"])
     assert events["counter:changed"] is True
     assert events["shard:action-complete"] is True
+```
+
+`post_action()` uses your `SHARD_URL_NAMESPACE` and sets `HTTP_HX_REQUEST` automatically.
+
+Manual equivalent:
+
+```python
+def test_increment_action_via_htmx(client, shard_instance_id):
+    result = mount_component(Counter, props={"initial": 1, "step": 2})
+
+    response = client.post(
+        f"/shard/action/{result.instance_id}/increment/",
+        HTTP_HX_REQUEST="true",
+    )
 ```
 
 Important details:
@@ -273,11 +286,13 @@ Add `django_db` only when your components or views touch the ORM.
 
 ## Tips
 
-1. **Extract instance IDs** with a small helper (see `shard_instance_id` fixture above) or a one-liner: `html.split('id="shard-')[1].split('"')[0]`
-2. **Slots survive actions** — cache stores slot HTML; re-render endpoints should still include slot content
-3. **HTMX partials omit scoped CSS** — assert `"<style data-shard-styles="` is absent on action responses if you test partial swaps
-4. **Isolate tests** — each `mount()` gets a new UUID; use `cache.clear()` if you construct components with fixed `instance_id`
-5. **List registered components** — `python manage.py shard_list` helps verify autodiscover during setup
+1. **Use `shard.testing`** — `extract_instance_id()` and `post_action()` avoid brittle HTML parsing
+2. **Prefer `mount_component()`** when you need the instance ID without parsing HTML
+3. **Slots survive actions** — cache stores slot HTML; re-render endpoints should still include slot content
+4. **HTMX partials omit scoped CSS** — assert `"<style data-shard-styles="` is absent on action responses if you test partial swaps
+5. **Isolate tests** — each `mount()` gets a new UUID; use `cache.clear()` if you construct components with fixed `instance_id`
+6. **List registered components** — `python manage.py shard_list` helps verify autodiscover during setup
+7. **Run `shard_doctor`** — checks cache, URL namespace, and missing component templates
 
 ## Example test layout
 

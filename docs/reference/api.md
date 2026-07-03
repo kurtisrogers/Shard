@@ -63,11 +63,26 @@ ActionResult.with_events(state, **events)
 ## Render functions
 
 ```python
-from shard import mount, render_component
+from shard import mount, mount_component, render_component
+from shard.render import MountResult
 
 html = mount(Counter, props={"initial": 5})
+result = mount_component(Counter, props={"initial": 5})  # MountResult(html, instance_id, component)
 html = render_component(Counter, props={"initial": 5}, slots={"default": "<p>Hi</p>"})
 ```
+
+`mount()` returns HTML only. `mount_component()` returns a `MountResult` with `html`, `instance_id`, and the live `component` instance — useful in tests and dynamic layouts.
+
+## Testing helpers
+
+```python
+from shard.testing import extract_instance_id, post_action
+
+instance_id = extract_instance_id(html)
+response = post_action(client, instance_id, "increment")
+```
+
+See the [Testing guide](../guides/testing.md) for full pytest setup.
 
 ## View data
 
@@ -121,9 +136,22 @@ all_components = get_all_components()
 
 ## Exceptions
 
+All public exceptions are importable from `shard`:
+
+```python
+from shard import (
+    ActionNotFoundError,
+    ComponentNotFoundError,
+    PropValidationError,
+    ShardError,
+    StateNotFoundError,
+    ViewDataError,
+)
+```
+
 - `ShardError` — base exception
-- `ComponentNotFoundError`
-- `PropValidationError`
-- `ActionNotFoundError`
-- `StateNotFoundError`
+- `ComponentNotFoundError` — includes registry suggestions when lookup fails
+- `PropValidationError` — includes component name and prop label
+- `ActionNotFoundError` — lists available actions
+- `StateNotFoundError` — mentions cache expiry and mounting
 - `ViewDataError` — invalid view data or disallowed component name

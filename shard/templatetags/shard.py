@@ -1,17 +1,21 @@
 from __future__ import annotations
 
 import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from django import template
 from django.template import TemplateSyntaxError
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
+from shard.debug import warn_missing_action
 from shard.htmx import build_alpine_data, build_htmx_attrs
 from shard.registry import get_component
 from shard.render import render_component
 from shard.slots import DEFAULT_SLOT
+
+if TYPE_CHECKING:
+    from shard.component import Component
 
 register = template.Library()
 
@@ -33,20 +37,24 @@ def shard_scripts(context, alpine: bool | None = None) -> str:
 
 
 @register.simple_tag
-def shard_root(component) -> str:
+def shard_root(component: Component) -> str:
     return mark_safe(
         f'id="shard-{component.instance_id}" data-shard-scope="{component.shard_scope}"'
     )
 
 
 @register.simple_tag
-def shard_action(component, action_name: str) -> str:
-    return component.action_urls().get(action_name, "#")
+def shard_action(component: Component, action_name: str) -> str:
+    url = component.action_urls().get(action_name)
+    if not url:
+        warn_missing_action(component, action_name, source="shard_action")
+        return "#"
+    return url
 
 
 @register.simple_tag
 def shard_htmx(
-    component,
+    component: Component,
     action_name: str,
     swap: str = "outerHTML",
     target: str = "",
@@ -66,7 +74,7 @@ def shard_htmx(
 
 
 @register.simple_tag
-def shard_alpine(component, **extra: Any) -> str:
+def shard_alpine(component: Component, **extra: Any) -> str:
     return build_alpine_data(component, extra or None)
 
 

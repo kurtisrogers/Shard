@@ -43,7 +43,7 @@ def test_prop_list_coercion_from_json_string():
 
 
 def test_required_prop_missing_raises():
-    with pytest.raises(PropValidationError, match="name"):
+    with pytest.raises(PropValidationError, match="Prop 'Name' is required"):
         TypedComponent(props={})
 
 
@@ -53,7 +53,7 @@ def test_unknown_prop_raises():
 
 
 def test_invalid_prop_type_raises():
-    with pytest.raises(PropValidationError, match="count"):
+    with pytest.raises(PropValidationError, match="Prop 'Count' expected int"):
         TypedComponent(props={"name": "x", "count": "not-a-number"})
 
 

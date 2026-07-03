@@ -50,7 +50,12 @@ class StateStore:
     def load(cls, instance_id: str) -> StateRecord:
         raw = cache.get(cls._key(instance_id))
         if raw is None:
-            raise StateNotFoundError(f"No state found for component instance '{instance_id}'.")
+            timeout = get_setting("STATE_TIMEOUT")
+            raise StateNotFoundError(
+                f"No state found for component instance '{instance_id}'. "
+                "Mount the component first so state is saved to cache, or check whether "
+                f"SHARD_STATE_TIMEOUT ({timeout}s) has expired."
+            )
 
         data = json.loads(raw)
         return StateRecord(
