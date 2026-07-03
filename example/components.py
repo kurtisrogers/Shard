@@ -1,4 +1,16 @@
-from shard import ActionResult, Component, Prop, action, computed, emits
+from example.demo_view_data import EXAMPLE_ALLOWED_COMPONENTS, initial_demo_view_tree
+from shard import (
+    ActionResult,
+    Component,
+    Prop,
+    ViewTreeComponent,
+    action,
+    computed,
+    emits,
+    ensure_node_ids,
+    get_slot_nodes,
+    set_slot_nodes,
+)
 
 
 class Layout(Component):
@@ -90,4 +102,67 @@ class TodoList(Component):
     @action
     def set_draft(self, state: dict, draft: str = "") -> dict:
         state["draft"] = draft
+        return state
+
+
+class ViewPage(ViewTreeComponent):
+    """Demo page with a mutable layout driven by view data in server state."""
+
+    allowed_view_components = EXAMPLE_ALLOWED_COMPONENTS
+    template_name = "components/view_page.html"
+
+    def get_initial_state(self) -> dict:
+        return {"tree": initial_demo_view_tree(), "footer_visible": True}
+
+    @computed
+    def card_count(self) -> int:
+        return len(get_slot_nodes(self.state["tree"], "default"))
+
+    @action
+    def add_card(self, state: dict) -> dict:
+        tree = state["tree"]
+        cards = get_slot_nodes(tree, "default")
+        next_index = len(cards) + 1
+        cards.append(
+            ensure_node_ids(
+                {
+                    "component": "Card",
+                    "props": {"title": f"Dynamic card {next_index}"},
+                    "children": [
+                        {"component": "Counter", "props": {"initial": 0, "step": 1}},
+                    ],
+                }
+            )
+        )
+        self.commit_view_tree(state, set_slot_nodes(tree, "default", cards))
+        return state
+
+    @action
+    def remove_last_card(self, state: dict) -> dict:
+        tree = state["tree"]
+        cards = get_slot_nodes(tree, "default")
+        if cards:
+            self.commit_view_tree(state, set_slot_nodes(tree, "default", cards[:-1]))
+        return state
+
+    @action
+    def toggle_footer(self, state: dict) -> dict:
+        tree = state["tree"]
+        footer_visible = not state.get("footer_visible", True)
+        if footer_visible:
+            footer = [
+                ensure_node_ids(
+                    {
+                        "component": "Alert",
+                        "props": {
+                            "level": "success",
+                            "message": "Footer restored from view-data state.",
+                        },
+                    }
+                )
+            ]
+        else:
+            footer = []
+        self.commit_view_tree(state, set_slot_nodes(tree, "footer", footer))
+        state["footer_visible"] = footer_visible
         return state

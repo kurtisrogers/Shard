@@ -1,14 +1,18 @@
-# Shard
+# Shrd
 
 A Django-native component framework for building UI with **props**, **server state**, **slots**, and **scoped styles** — using only the Django ecosystem plus bundled HTMX and Alpine.js.
 
+```bash
+pip install shrd
+```
+
 📖 **[Full documentation](https://kurtisrogers.github.io/Shard/)**
 
-Shard is a framework, not a drop-in library. Your Django project adopts its conventions: components live in your apps, templates sit beside scoped CSS, and HTMX carries server actions.
+Shrd is a framework, not a drop-in library. Your Django project adopts its conventions: components live in your apps, templates sit beside scoped CSS, and HTMX carries server actions.
 
 ## Philosophy
 
-Shard does not ship a widget catalog. It gives you a small, familiar model — closer to React/Vue than to Django templates alone — without a build step or SPA complexity:
+Shrd does not ship a widget catalog. It gives you a small, familiar model — closer to React/Vue than to Django templates alone — without a build step or SPA complexity:
 
 - **Props** — typed inputs declared on a Python class
 - **State** — server-owned data updated via `@action` methods
@@ -18,6 +22,7 @@ Shard does not ship a widget catalog. It gives you a small, familiar model — c
 - **Events** — HTMX custom events via `@emits` and `ActionResult`
 - **HTMX** — partial re-renders after actions
 - **Alpine.js** — optional client-side behavior inside templates
+- **View data** — optional structured layouts, mutable via `ViewTreeComponent`
 
 ## Quick start
 
@@ -50,10 +55,21 @@ See the [quickstart guide](https://kurtisrogers.github.io/Shard/getting-started/
 | Slots          | [concepts/slots](https://kurtisrogers.github.io/Shard/concepts/slots/)                             |
 | Scoped styles  | [concepts/styles](https://kurtisrogers.github.io/Shard/concepts/styles/)                           |
 | Actions & HTMX | [interactivity/actions](https://kurtisrogers.github.io/Shard/interactivity/actions/)               |
+| HTMX & Alpine  | [guides/htmx-and-alpine](https://kurtisrogers.github.io/Shard/guides/htmx-and-alpine/)             |
+| View data      | [guides/view-data](https://kurtisrogers.github.io/Shard/guides/view-data/)                         |
 | API reference  | [reference/api](https://kurtisrogers.github.io/Shard/reference/api/)                               |
 | Examples       | [examples](https://kurtisrogers.github.io/Shard/examples/)                                         |
 
 ## Example app
+
+```bash
+pip install shrd[dev]
+cd example
+python manage.py migrate
+python manage.py runserver
+```
+
+Or install from source:
 
 ```bash
 pip install -e ".[dev]"
@@ -71,7 +87,7 @@ python -m pytest tests/ -q
 python manage.py shard_report   # framework size / page-load weight
 ```
 
-**60 tests** with **≥90% coverage**. CI runs pre-commit, Ruff, tests (Python 3.10–3.12), and docs build on every PR.
+**96 tests** with **≥90% coverage**. CI runs pre-commit, Ruff, tests (Python 3.10–3.12), and docs build on every PR.
 
 ```bash
 pre-commit run --all-files  # lint + format locally

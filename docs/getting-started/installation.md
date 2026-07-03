@@ -5,6 +5,18 @@
 - Python 3.10+
 - Django 4.2+
 
+## Install from PyPI
+
+```bash
+pip install shrd
+```
+
+Requires Python 3.10+ and Django 4.2+. The import name is `shard`:
+
+```python
+INSTALLED_APPS = ["shard", ...]
+```
+
 ## Install from source
 
 ```bash
@@ -56,14 +68,14 @@ This adds a `SHARD` dict with `version`, `url_namespace`, and `debug`.
 
 ## Static files
 
-Shard bundles HTMX and Alpine.js. Load them once per page:
+Shrd bundles HTMX and Alpine.js. Load them once per page:
 
 ```django
 {% load shard %}
 {% shard_scripts %}
 ```
 
-In production, run `collectstatic` as usual. Shard assets live under `shard/static/shard/`.
+In production, run `collectstatic` as usual. Shrd assets live under `shard/static/shard/`.
 
 ## Cache backend
 
@@ -82,7 +94,7 @@ For development, `LocMemCache` works fine.
 
 ## Testing your project
 
-Shard components are plain Django Python classes — test them with **pytest** and **pytest-django**:
+Shrd components are plain Django Python classes — test them with **pytest** and **pytest-django**:
 
 ```bash
 pip install pytest pytest-django

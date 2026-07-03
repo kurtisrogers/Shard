@@ -21,7 +21,7 @@ myproject/
 
 ## `components.py` convention
 
-Each Django app can have a `components.py` module at the app root. Shard's autodiscover imports it at startup and registers every `Component` subclass **defined in that file**.
+Each Django app can have a `components.py` module at the app root. Shrd's autodiscover imports it at startup and registers every `Component` subclass **defined in that file**.
 
 !!! note "Autodiscover only registers classes defined in `components.py`"
     Classes imported from other modules are **not** registered automatically, even if they appear in `components.py`. For example, this `DatePicker` would be skipped:
@@ -59,7 +59,7 @@ register(DatePicker, name="DatePicker")
 
 ## URL configuration
 
-Shard needs a URL prefix for HTMX action endpoints:
+Shrd needs a URL prefix for HTMX action endpoints:
 
 ```python
 # urls.py
@@ -94,4 +94,4 @@ Lists all registered components with their props and actions.
 
 ## Test your components
 
-Shard works with pytest and pytest-django. See the [Testing guide](../guides/testing.md) for settings, `conftest.py`, and examples using `mount()`, direct action tests, and HTMX client requests.
+Shrd works with pytest and pytest-django. See the [Testing guide](../guides/testing.md) for settings, `conftest.py`, and examples using `mount()`, direct action tests, and HTMX client requests.

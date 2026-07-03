@@ -1,6 +1,6 @@
 # Performance & weight
 
-Shard is designed to stay light. This page documents what it costs on the wire and on your server.
+Shrd is designed to stay light. This page documents what it costs on the wire and on your server.
 
 ## Quick report
 
@@ -23,13 +23,13 @@ python manage.py shard_report --json --check-budget
 
 ## Client weight (default setup)
 
-Shard ships three JavaScript files. Only two are required for most pages:
+Shrd ships three JavaScript files. Only two are required for most pages:
 
-| Asset         | Gzip (approx.) | Required | Purpose                |
-| ------------- | -------------- | -------- | ---------------------- |
-| `htmx.min.js` | ~16 KB         | Yes      | Server-driven updates  |
-| `shard.js`    | <1 KB          | Yes      | HTMX request glue      |
-| `alpine.min.js` | ~16 KB       | No       | Client-side UI state   |
+| Asset           | Gzip (approx.) | Required | Purpose               |
+| --------------- | -------------- | -------- | --------------------- |
+| `htmx.min.js`   | ~16 KB         | Yes      | Server-driven updates |
+| `shard.js`      | <1 KB          | Yes      | HTMX request glue     |
+| `alpine.min.js` | ~16 KB         | No       | Client-side UI state  |
 
 **HTMX-only page load:** ~17 KB gzip, **2 requests**
 
@@ -55,14 +55,14 @@ SHARD_LOAD_ALPINE = True
 
 ## Server weight
 
-| Area | Cost |
-| ---- | ---- |
+| Area           | Cost                                           |
+| -------------- | ---------------------------------------------- |
 | Python package | ~150 KB of code/templates (see `shard_report`) |
-| Database | None — no migrations, no ORM models |
-| Cache | One entry per mounted component instance |
-| Per request | Template render + optional cache read/write |
+| Database       | None — no migrations, no ORM models            |
+| Cache          | One entry per mounted component instance       |
+| Per request    | Template render + optional cache read/write    |
 
-Shard adds no middleware and no per-request overhead beyond what your components do.
+Shrd adds no middleware and no per-request overhead beyond what your components do.
 
 ## Optimizations built in
 
@@ -76,7 +76,7 @@ Alpine.js is only loaded when you request it. Components that use only server st
 
 ### Minimal glue script
 
-`shard.js` is under 1 KB. It only tags HTMX requests so the server can identify Shard actions.
+`shard.js` is under 1 KB. It only tags HTMX requests so the server can identify Shrd actions.
 
 ### Scoped CSS minification
 
@@ -88,7 +88,7 @@ Component styles are minified by default before injection (`SHARD_MINIFY_CSS`). 
 
 ### Co-located CSS, not a global bundle
 
-Styles are scoped per component and only included when that component mounts. There is no site-wide CSS payload from Shard.
+Styles are scoped per component and only included when that component mounts. There is no site-wide CSS payload from Shrd.
 
 ## Tuning tips
 
@@ -101,7 +101,7 @@ Styles are scoped per component and only included when that component mounts. Th
 
 ## Size budgets
 
-Shard ships conservative gzip budgets for bundled JavaScript. CI runs:
+Shrd ships conservative gzip budgets for bundled JavaScript. CI runs:
 
 ```bash
 python manage.py shard_report --check-budget
@@ -109,25 +109,25 @@ python manage.py shard_report --check-budget
 
 Current limits (see `shard/weight.py`):
 
-| Check | Budget |
-| ----- | ------ |
-| `htmx.min.js` gzip | 17.5 KB |
-| `shard.js` gzip | 500 B |
+| Check                | Budget  |
+| -------------------- | ------- |
+| `htmx.min.js` gzip   | 17.5 KB |
+| `shard.js` gzip      | 500 B   |
 | `alpine.min.js` gzip | 17.5 KB |
-| Required JS total | 18 KB |
-| All JS (with Alpine) | 35 KB |
+| Required JS total    | 18 KB   |
+| All JS (with Alpine) | 35 KB   |
 
 Raise budgets intentionally when upgrading vendored libraries.
 
 ## Comparison mindset
 
-Shard is not competing with React/Vue bundle sizes — it deliberately avoids a client framework. The tradeoff:
+Shrd is not competing with React/Vue bundle sizes — it deliberately avoids a client framework. The tradeoff:
 
-| | Shard | Typical SPA |
-|---|-------|-------------|
-| JS transfer | ~17–33 KB gzip | 100–300+ KB gzip |
-| Build tooling | None | webpack/Vite required |
-| Server round-trips | Per action (HTMX) | API calls + hydration |
-| SEO / first paint | Server-rendered HTML | Depends on SSR setup |
+|                    | Shrd                 | Typical SPA           |
+| ------------------ | -------------------- | --------------------- |
+| JS transfer        | ~17–33 KB gzip       | 100–300+ KB gzip      |
+| Build tooling      | None                 | webpack/Vite required |
+| Server round-trips | Per action (HTMX)    | API calls + hydration |
+| SEO / first paint  | Server-rendered HTML | Depends on SSR setup  |
 
-For Django teams who want components without a SPA, Shard keeps the client payload small by keeping logic on the server.
+For Django teams who want components without a SPA, Shrd keeps the client payload small by keeping logic on the server.

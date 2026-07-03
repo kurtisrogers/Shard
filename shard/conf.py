@@ -11,6 +11,7 @@ SettingName = Literal[
     "LOAD_ALPINE",
     "PRELOAD_SCRIPTS",
     "MINIFY_CSS",
+    "VIEW_DATA_ALLOWED_COMPONENTS",
 ]
 
 DEFAULTS: dict[SettingName, Any] = {
@@ -19,6 +20,7 @@ DEFAULTS: dict[SettingName, Any] = {
     "AUTODISCOVER": True,
     "LOAD_ALPINE": False,
     "PRELOAD_SCRIPTS": True,
+    "VIEW_DATA_ALLOWED_COMPONENTS": None,
 }
 
 

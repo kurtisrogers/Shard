@@ -76,3 +76,12 @@ CACHES = {
 }
 
 SHARD_STATE_TIMEOUT = 60 * 60
+
+SHARD_VIEW_DATA_ALLOWED_COMPONENTS = [
+    "Alert",
+    "Button",
+    "Card",
+    "Counter",
+    "Layout",
+    "TodoList",
+]

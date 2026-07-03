@@ -1,6 +1,6 @@
 # Scoped styles
 
-Shard scopes component CSS automatically so class names don't leak globally.
+Shrd scopes component CSS automatically so class names don't leak globally.
 
 ## Convention: co-located CSS
 
@@ -14,7 +14,7 @@ templates/components/
 └── counter.css
 ```
 
-Shard discovers `card.css` when rendering `card.html` and injects scoped styles automatically.
+Shrd discovers `card.css` when rendering `card.html` and injects scoped styles automatically.
 
 ## Writing styles
 
@@ -36,7 +36,7 @@ Write normal CSS with simple class names:
 
 ## How scoping works
 
-At render time, Shard prefixes every selector:
+At render time, Shrd prefixes every selector:
 
 ```css
 /* You write */

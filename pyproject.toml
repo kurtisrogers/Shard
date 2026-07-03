@@ -3,23 +3,26 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "django-shard"
-version = "0.2.0"
+name = "shrd"
+version = "0.3.0"
 description = "A Django-native component framework with props, state, HTMX, and Alpine.js"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
-authors = [{ name = "Shard Contributors" }]
-keywords = ["django", "components", "htmx", "alpine"]
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Shrd Contributors" }]
+keywords = ["django", "components", "htmx", "alpine", "shard"]
 classifiers = [
     "Framework :: Django",
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.0",
     "Framework :: Django :: 5.1",
+    "Framework :: Django :: 6.0",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
 dependencies = [
     "Django>=4.2",

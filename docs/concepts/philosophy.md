@@ -1,12 +1,12 @@
 # Philosophy
 
-Shard occupies a specific niche: **making it easy to build components in Django**, not shipping a catalog of ready-made widgets.
+Shrd occupies a specific niche: **making it easy to build components in Django**, not shipping a catalog of ready-made widgets.
 
 ## Framework, not library
 
 A library gives you pre-built pieces to import. A framework gives you patterns to build your own pieces.
 
-Shard provides:
+Shrd provides:
 
 - A `Component` base class
 - A props system
@@ -24,7 +24,7 @@ You provide:
 
 ## Lighter than React/Vue
 
-Shard deliberately avoids:
+Shrd deliberately avoids:
 
 - Virtual DOM
 - Client-side routing
@@ -36,7 +36,7 @@ Server state lives on the server. Client interactivity is opt-in via Alpine.js. 
 
 ## Less opinionated than full SPA frameworks
 
-Shard does not dictate:
+Shrd does not dictate:
 
 - CSS methodology (BEM, utility classes, plain CSS — your choice)
 - Page layout structure
@@ -47,7 +47,7 @@ The only conventions are where files go and how components connect.
 
 ## Django ecosystem only
 
-Shard uses:
+Shrd uses:
 
 - Django templates
 - Django cache
@@ -57,7 +57,7 @@ Shard uses:
 
 HTMX and Alpine.js are bundled as static assets — no CDN dependency, no package.json in your project.
 
-## When to use Shard
+## When to use Shrd
 
 **Good fit:**
 
@@ -72,4 +72,4 @@ HTMX and Alpine.js are bundled as static assets — no CDN dependency, no packag
 - Real-time collaborative editing
 - Offline-first applications
 
-For those cases, a dedicated frontend framework may serve you better. Shard is for teams who want to stay in Django.
+For those cases, a dedicated frontend framework may serve you better. Shrd is for teams who want to stay in Django.

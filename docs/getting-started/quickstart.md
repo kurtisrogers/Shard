@@ -27,7 +27,7 @@ class Counter(Component):
         return state
 ```
 
-Shard auto-discovers components from `<app>.components` when the app is in `INSTALLED_APPS`.
+Shrd auto-discovers components from `<app>.components` when the app is in `INSTALLED_APPS`.
 
 ## 2. Create the template
 
@@ -51,7 +51,7 @@ Shard auto-discovers components from `<app>.components` when the app is in `INST
 }
 ```
 
-Place `counter.css` beside `counter.html`. Shard discovers it automatically and scopes selectors to `[data-shard-scope="counter"]`.
+Place `counter.css` beside `counter.html`. Shrd discovers it automatically and scopes selectors to `[data-shard-scope="counter"]`.
 
 ## 4. Use it in a page
 
@@ -68,7 +68,7 @@ Place `counter.css` beside `counter.html`. Shard discovers it automatically and 
 python manage.py runserver
 ```
 
-Click the buttons. HTMX posts to Shard's action endpoint, the server runs your `@action` method, persists updated state, and returns a re-rendered HTML fragment.
+Click the buttons. HTMX posts to Shrd's action endpoint, the server runs your `@action` method, persists updated state, and returns a re-rendered HTML fragment.
 
 ## What happened?
 
@@ -76,6 +76,6 @@ Click the buttons. HTMX posts to Shard's action endpoint, the server runs your `
 2. State was initialized via `get_initial_state()` → `{"count": 5}`
 3. Props, state, and slots were persisted to cache under a unique instance ID
 4. HTMX `hx-post` hit `/shard/action/<id>/increment/`
-5. Shard loaded state, called `increment`, saved new state, re-rendered the template
+5. Shrd loaded state, called `increment`, saved new state, re-rendered the template
 
-That's the full loop. Everything else in Shard builds on these primitives.
+That's the full loop. Everything else in Shrd builds on these primitives.

@@ -84,6 +84,56 @@ response = post_action(client, instance_id, "increment")
 
 See the [Testing guide](../guides/testing.md) for full pytest setup.
 
+## View data
+
+Render component trees from structured data. See the [View data guide](../guides/view-data.md).
+
+```python
+from shard import (
+    ViewTreeComponent,
+    commit_view_tree,
+    ensure_node_ids,
+    get_slot_nodes,
+    render_view_data,
+    set_slot_nodes,
+)
+
+html = render_view_data(
+    {"component": "Card", "props": {"title": "Hi"}},
+    allowed_components=frozenset({"Card"}),
+    stable=True,  # preserve child state across re-renders
+)
+```
+
+### shard.ViewTreeComponent
+
+Base class for components whose layout is stored as view data in `state["tree"]`.
+
+| Class attribute           | Default          | Description                                                   |
+| ------------------------- | ---------------- | ------------------------------------------------------------- |
+| `view_tree_key`           | `"tree"`         | State key holding the descriptor                              |
+| `content_context_key`     | `"content_html"` | Template variable for rendered tree                           |
+| `allowed_view_components` | `None`           | Whitelist; falls back to `SHARD_VIEW_DATA_ALLOWED_COMPONENTS` |
+
+| Method                             | Description                                               |
+| ---------------------------------- | --------------------------------------------------------- |
+| `get_view_tree()`                  | Return the current descriptor from state                  |
+| `set_view_tree(tree)`              | Replace the descriptor in memory                          |
+| `commit_view_tree(state, tree)`    | Replace tree in action state and prune removed node cache |
+| `render_view_tree(tree, request=)` | Render a tree with stable ids                             |
+
+Subclasses must set `template_name` and render `{{ content_html|safe }}` in the template.
+
+## Registry
+
+```python
+from shard.registry import register, get_component, get_all_components
+
+register(MyComponent, name="MyComponent")
+cls = get_component("MyComponent")
+all_components = get_all_components()
+```
+
 ## Exceptions
 
 All public exceptions are importable from `shard`:
@@ -95,21 +145,13 @@ from shard import (
     PropValidationError,
     ShardError,
     StateNotFoundError,
+    ViewDataError,
 )
 ```
 
 - `ShardError` — base exception
-- `ComponentNotFoundError` — includes registry suggestions when DEBUG-adjacent lookup fails
+- `ComponentNotFoundError` — includes registry suggestions when lookup fails
 - `PropValidationError` — includes component name and prop label
 - `ActionNotFoundError` — lists available actions
 - `StateNotFoundError` — mentions cache expiry and mounting
-
-## Registry
-
-```python
-from shard.registry import register, get_component, get_all_components
-
-register(MyComponent, name="MyComponent")
-cls = get_component("MyComponent")
-all_components = get_all_components()
-```
+- `ViewDataError` — invalid view data or disallowed component name

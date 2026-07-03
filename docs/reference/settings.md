@@ -1,6 +1,6 @@
 # Settings
 
-All Shard settings use the `SHARD_` prefix in Django settings.
+All Shrd settings use the `SHARD_` prefix in Django settings.
 
 ## SHARD_STATE_TIMEOUT
 
@@ -26,7 +26,7 @@ SHARD_URL_NAMESPACE = "shard"
 
 **Default:** `True`
 
-When `True`, Shard imports `<app>.components` for every installed app at startup.
+When `True`, Shrd imports `<app>.components` for every installed app at startup.
 
 ```python
 SHARD_AUTODISCOVER = False  # manual registration only
@@ -63,13 +63,29 @@ SHARD_MINIFY_CSS = True  # force minification in DEBUG
 SHARD_MINIFY_CSS = False  # force readable CSS in production
 ```
 
+## SHARD_VIEW_DATA_ALLOWED_COMPONENTS
+
+**Default:** `None`
+
+Optional global whitelist of component names allowed in [view data](../guides/view-data.md) trees. When `None`, you must pass `allowed_components=` to `render_view_data()` or set `allowed_view_components` on a `ViewTreeComponent` subclass.
+
+```python
+SHARD_VIEW_DATA_ALLOWED_COMPONENTS = [
+    "Layout",
+    "Card",
+    "Counter",
+]
+```
+
+For security, always restrict which components view data can instantiate. Never pass user-controlled component names without validation.
+
 ## Context processor
 
 Add `shard.context_processors.shard` to expose `SHARD` in templates:
 
 ```python
 SHARD = {
-    "version": "0.2.0",
+    "version": "0.3.0",
     "url_namespace": "shard",
     "debug": True,
 }
@@ -77,7 +93,7 @@ SHARD = {
 
 ## Cache configuration
 
-Shard uses Django's default cache. For production:
+Shrd uses Django's default cache. For production:
 
 ```python
 CACHES = {
@@ -94,4 +110,4 @@ CACHES = {
 STATIC_URL = "static/"
 ```
 
-Run `python manage.py collectstatic` in production. Shard assets are under `shard/static/shard/`.
+Run `python manage.py collectstatic` in production. Shrd assets are under `shard/static/shard/`.
