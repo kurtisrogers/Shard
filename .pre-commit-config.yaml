@@ -30,7 +30,7 @@ repos:
   - repo: local
     hooks:
       - id: shard-a11y
-        name: Shrd accessibility
+        name: Shrd accessibility (axe)
         entry: scripts/shard_a11y_precommit.sh
         language: system
         pass_filenames: true

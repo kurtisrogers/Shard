@@ -1,10 +1,9 @@
 import json
 import sys
-from pathlib import Path
 
 from django.core.management.base import BaseCommand
 
-from shard.a11y import check_template_source, format_violations
+from shard.a11y import format_violations
 from shard.a11y_samples import check_rendered_samples
 
 
@@ -15,7 +14,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "paths",
             nargs="*",
-            help="Optional template paths for lightweight static checks.",
+            help="Ignored for axe checks — templates are validated via rendered samples.",
         )
         parser.add_argument(
             "--json",
@@ -25,22 +24,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         findings = check_rendered_samples()
-        template_findings: list[tuple[str, list]] = []
-
-        for path_str in options["paths"]:
-            path = Path(path_str)
-            if not path.is_file() or path.suffix != ".html":
-                continue
-            source = path.read_text(encoding="utf-8")
-            violations = check_template_source(source, path=str(path))
-            if violations:
-                template_findings.append((str(path), violations))
-
-        all_findings = [*findings, *template_findings]
+        all_findings = findings
         total = sum(len(violations) for _, violations in all_findings)
 
         if options["json"]:
             payload = {
+                "engine": "axe-core",
                 "violations": [
                     {
                         "sample": sample,
@@ -49,6 +38,8 @@ class Command(BaseCommand):
                                 "code": issue.code,
                                 "selector": issue.selector,
                                 "message": issue.message,
+                                "impact": issue.impact,
+                                "help_url": issue.help_url,
                             }
                             for issue in issues
                         ],

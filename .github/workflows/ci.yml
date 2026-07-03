@@ -20,6 +20,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Node dependencies for axe
+        run: npm ci
+
       - name: Install package for local pre-commit hooks
         run: pip install -e ".[dev]"
 

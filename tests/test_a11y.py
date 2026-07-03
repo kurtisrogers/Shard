@@ -1,45 +1,41 @@
 import json
+from unittest.mock import patch
 
 import pytest
 from django.core.management import call_command
 
-from shard.a11y import A11yViolation, check_html, check_template_source
+from shard.a11y import A11yViolation, check_html, run_axe_on_html
 from shard.a11y_samples import check_rendered_samples, render_view_data_samples
 
-
-def test_check_html_flags_missing_alt():
-    violations = check_html('<img src="/logo.png">')
-    assert any(v.code == "missing-alt" for v in violations)
-
-
-def test_check_html_allows_decorative_alt():
-    violations = check_html('<img src="/logo.png" alt="">')
-    assert violations == []
-
-
-def test_check_html_flags_unlabeled_input():
-    violations = check_html('<input type="text" name="q">')
-    assert any(v.code == "missing-label" for v in violations)
+AXE_SAMPLE_VIOLATIONS = [
+    {
+        "code": "image-alt",
+        "message": "Images must have alternative text",
+        "impact": "critical",
+        "selector": "img",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/image-alt",
+        "count": 1,
+    }
+]
 
 
-def test_check_html_allows_aria_label_input():
-    violations = check_html('<input type="text" name="q" aria-label="Search">')
-    assert violations == []
+def test_run_axe_on_html_parses_violations():
+    with patch("shard.a11y.subprocess.run") as run_mock:
+        run_mock.return_value.returncode = 0
+        run_mock.return_value.stdout = json.dumps(AXE_SAMPLE_VIOLATIONS)
+        run_mock.return_value.stderr = ""
+
+        violations = run_axe_on_html("<img src='x.jpg'>")
+
+    assert len(violations) == 1
+    assert violations[0].code == "image-alt"
+    assert violations[0].impact == "critical"
 
 
-def test_check_html_flags_duplicate_ids():
-    violations = check_html('<div id="x"></div><span id="x"></span>')
-    assert any(v.code == "duplicate-id" for v in violations)
-
-
-def test_check_html_flags_missing_lang_on_document():
-    violations = check_html("<html><body></body></html>", context="document")
-    assert any(v.code == "missing-lang" for v in violations)
-
-
-def test_check_template_source_flags_single_line_img():
-    violations = check_template_source('<img src="x">', path="card.html")
-    assert any(v.code == "missing-alt" for v in violations)
+def test_check_html_delegates_to_axe():
+    with patch("shard.a11y.run_axe_on_html", return_value=[]) as axe_mock:
+        assert check_html("<p>ok</p>") == []
+    axe_mock.assert_called_once()
 
 
 def test_rendered_example_samples_pass():
@@ -61,6 +57,7 @@ def test_shard_a11y_command_passes(capsys):
 def test_shard_a11y_command_json(capsys):
     call_command("shard_a11y", "--json")
     data = json.loads(capsys.readouterr().out)
+    assert data["engine"] == "axe-core"
     assert data["count"] == 0
 
 
@@ -71,9 +68,10 @@ def test_shard_a11y_command_fails_on_violation(capsys):
                 "Bad",
                 [
                     A11yViolation(
-                        code="missing-alt",
-                        message="missing",
+                        code="image-alt",
+                        message="Images must have alternative text",
                         selector="img",
+                        impact="critical",
                     )
                 ],
             )
@@ -85,4 +83,4 @@ def test_shard_a11y_command_fails_on_violation(capsys):
     with pytest.raises(SystemExit) as exc:
         call_command("shard_a11y")
     assert exc.value.code == 1
-    assert "Bad" in capsys.readouterr().err
+    assert "image-alt" in capsys.readouterr().err

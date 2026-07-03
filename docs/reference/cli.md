@@ -30,15 +30,15 @@ Exits with code 1 when issues are found (suitable for CI smoke checks).
 
 ## shard_a11y
 
-Check rendered components and view-data output for common accessibility issues:
+Check rendered components and view-data output with **axe-core**:
 
 ```bash
+npm ci
 python manage.py shard_a11y
 python manage.py shard_a11y --json
-python manage.py shard_a11y path/to/components/card.html
 ```
 
-Runs smoke renders for registered components and configured view-data trees, then checks the HTML. See the [Accessibility guide](../guides/accessibility.md).
+Renders registered components and configured view-data trees, then runs axe via `scripts/axe_check.mjs`. See the [Accessibility guide](../guides/accessibility.md).
 
 ## shard_report
 

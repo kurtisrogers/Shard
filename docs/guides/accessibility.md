@@ -1,10 +1,11 @@
 # Accessibility
 
-Shrd can check rendered component HTML for common accessibility issues. This works for **static components** and **view-data trees** because both produce HTML before the check runs.
+Shrd checks rendered component HTML with **[axe-core](https://github.com/dequelabs/axe-core)**. This works for **static components** and **view-data trees** because both produce HTML before the check runs.
 
 ## Quick check
 
 ```bash
+npm ci
 python manage.py shard_a11y
 ```
 
@@ -14,40 +15,30 @@ JSON output:
 python manage.py shard_a11y --json
 ```
 
-Optional static checks on template source files:
-
-```bash
-python manage.py shard_a11y path/to/components/card.html
-```
-
-## What gets checked
-
-### Rendered output (recommended)
-
-The command mounts registered components with sample props and renders configured view-data trees, then checks the HTML for issues such as:
-
-| Code | Issue |
-| ---- | ----- |
-| `missing-alt` | `<img>` without an `alt` attribute |
-| `missing-label` | Text inputs without `aria-label`, `aria-labelledby`, or associated label |
-| `missing-name` | Buttons or links with no accessible name |
-| `duplicate-id` | Duplicate `id` attributes in the same fragment |
-| `positive-tabindex` | `tabindex` greater than 0 |
-| `missing-lang` | Full documents missing `<html lang>` |
-
-### View data
+## How axe fits view data
 
 View-data layouts are checked **after rendering**:
 
 ```python
 render_view_data(tree, allowed_components=..., stable=True)
+# axe runs on the resulting HTML
 ```
 
-The JSON tree is not scanned directly — the generated HTML is. That means dynamic layouts are covered as long as you include representative trees in your sample configuration.
+The JSON tree is not scanned directly. Add representative trees to `SHARD_A11Y_VIEW_DATA` so axe sees your dynamic layouts.
+
+## What axe checks
+
+`shard_a11y` renders registered components and configured view-data samples, then runs axe via a small Node script (`scripts/axe_check.mjs`) using jsdom.
+
+Default tags: `wcag2a`, `wcag2aa`, `best-practice`.
+
+For **component fragments**, page-level landmark rules (`region`, duplicate `main`) are disabled because fragments are embedded in full pages at runtime. Color contrast is also disabled in jsdom.
+
+Run full-page axe checks (including contrast and landmarks) against served pages before release.
 
 ## Configure samples for your project
 
-Define render props for components:
+Component render props:
 
 ```python
 SHARD_A11Y_COMPONENT_SAMPLES = {
@@ -59,7 +50,7 @@ SHARD_A11Y_COMPONENT_SAMPLES = {
 }
 ```
 
-Define view-data trees to render:
+View-data trees:
 
 ```python
 SHARD_A11Y_VIEW_DATA = [
@@ -71,29 +62,34 @@ SHARD_A11Y_VIEW_DATA = [
 ]
 ```
 
-Each view-data entry is `(name, tree, allowed_components)`.
-
-If unset, the example demo tree is used when the example app is installed.
-
 ## Pre-commit
 
-This repository runs accessibility checks in pre-commit:
+This repository runs axe in pre-commit:
 
 ```yaml
 - repo: local
   hooks:
     - id: shard-a11y
-      name: Shrd accessibility
+      name: Shrd accessibility (axe)
       entry: scripts/shard_a11y_precommit.sh
       language: system
       pass_filenames: true
       always_run: true
 ```
 
-Copy `scripts/shard_a11y_precommit.sh` into your project (or call `python manage.py shard_a11y` directly) and set `DJANGO_SETTINGS_MODULE` to your settings module.
+Requirements:
+
+- **Node.js** (`npm ci` installs `axe-core` + `jsdom`)
+- **Python/Django** settings for rendering components
+
+The hook runs `npm ci` automatically when `node_modules` is missing.
 
 ## Limits
 
-This is a **fast heuristic checker**, not a replacement for axe, Lighthouse, or manual screen-reader testing. It catches common mistakes early but does not analyze color contrast, focus order in the full page, or client-side behavior after HTMX swaps.
+axe via jsdom catches most markup and ARIA issues early. It does **not** replace:
 
-Use it as a guardrail in development; run fuller audits before release.
+- Color contrast in real browsers
+- Focus order after HTMX swaps
+- Screen reader testing
+
+Use `shard_a11y` as a fast guardrail; run Lighthouse or `@axe-core/cli` against served pages before release.

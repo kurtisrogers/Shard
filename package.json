@@ -1,0 +1,11 @@
+{
+  "name": "shrd",
+  "private": true,
+  "type": "module",
+  "description": "Node tooling for Shrd development checks",
+  "devDependencies": {
+    "@axe-core/cli": "^4.10.3",
+    "axe-core": "^4.10.3",
+    "jsdom": "^25.0.1"
+  }
+}
