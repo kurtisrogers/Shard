@@ -45,17 +45,20 @@ class Prop:
             return self
         return instance._props[self.name]
 
-    def resolve(self, raw_value: Any | None) -> Any:
+    def resolve(self, raw_value: Any | None, *, component_name: str = "") -> Any:
+        label = self.label or self.name
+        prefix = f"{component_name}: " if component_name else ""
+
         if raw_value is None or raw_value == "":
             if self.required and self.default is None:
-                raise PropValidationError(f"Prop '{self.name}' is required.")
+                raise PropValidationError(f"{prefix}Prop '{label}' is required.")
             return self.default
 
         try:
             return coerce(self.type, raw_value)
         except (TypeError, ValueError) as exc:
             raise PropValidationError(
-                f"Prop '{self.name}' expected {self.type.__name__}, got {raw_value!r}."
+                f"{prefix}Prop '{label}' expected {self.type.__name__}, got {raw_value!r}."
             ) from exc
 
 

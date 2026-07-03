@@ -54,12 +54,13 @@ SHARD_PRELOAD_SCRIPTS = False
 
 ## SHARD_MINIFY_CSS
 
-**Default:** `True`
+**Default:** `False` when `DEBUG=True`, otherwise `True`
 
-When `True`, scoped component CSS is minified before injection. Disable for easier debugging of generated styles:
+When `True`, scoped component CSS is minified before injection. In development, CSS stays readable in DevTools unless you override:
 
 ```python
-SHARD_MINIFY_CSS = False
+SHARD_MINIFY_CSS = True  # force minification in DEBUG
+SHARD_MINIFY_CSS = False  # force readable CSS in production
 ```
 
 ## Context processor

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import difflib
 import importlib
 from typing import TYPE_CHECKING
 
@@ -22,12 +23,29 @@ def register(component_cls: type[Component], *, name: str | None = None) -> type
     return component_cls
 
 
+def _format_component_not_found(name: str) -> str:
+    registered = sorted(_REGISTRY)
+    message = (
+        f"Component '{name}' is not registered. "
+        "Ensure the app is in INSTALLED_APPS and components are defined in "
+        "<app>/components.py (not only imported there)."
+    )
+    if not registered:
+        return f"{message} No components are currently registered."
+
+    suggestions = difflib.get_close_matches(name, registered, n=3, cutoff=0.6)
+    if suggestions:
+        message += f" Did you mean: {', '.join(suggestions)}?"
+
+    preview = ", ".join(registered[:8])
+    if len(registered) > 8:
+        preview += ", ..."
+    return f"{message} ({len(registered)} registered: {preview})"
+
+
 def get_component(name: str) -> type[Component]:
     if name not in _REGISTRY:
-        raise ComponentNotFoundError(
-            f"Component '{name}' is not registered. "
-            "Ensure the app is in INSTALLED_APPS and components are imported."
-        )
+        raise ComponentNotFoundError(_format_component_not_found(name))
     return _REGISTRY[name]
 
 

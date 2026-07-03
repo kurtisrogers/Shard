@@ -207,8 +207,10 @@ class Component(metaclass=ComponentMeta):
     ) -> dict[str, Any]:
         handler = getattr(type(self), action_name, None)
         if handler is None or not getattr(handler, ACTION_MARKER, False):
+            available = ", ".join(self.action_names()) or "(none)"
             raise ActionNotFoundError(
-                f"Action '{action_name}' is not defined on {self.__class__.__name__}."
+                f"Action '{action_name}' is not defined on {self.__class__.__name__}. "
+                f"Available actions: {available}."
             )
 
         clean_payload = {
@@ -313,7 +315,7 @@ class Component(metaclass=ComponentMeta):
 
         for name, prop in self._prop_fields.items():
             try:
-                resolved[name] = prop.resolve(raw.get(name))
+                resolved[name] = prop.resolve(raw.get(name), component_name=self.__class__.__name__)
             except PropValidationError as exc:
                 errors.append(str(exc))
 

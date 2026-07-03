@@ -18,7 +18,7 @@ def test_dispatch_action_updates_state():
 
 def test_unknown_action_raises():
     component = Stateful(props={"count": 0})
-    with pytest.raises(ActionNotFoundError):
+    with pytest.raises(ActionNotFoundError, match="Available actions: bump"):
         component.dispatch_action("missing", {})
 
 

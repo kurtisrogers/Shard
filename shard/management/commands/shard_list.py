@@ -1,10 +1,19 @@
 from django.core.management.base import BaseCommand
+from django.template import TemplateDoesNotExist
+from django.template.loader import get_template
 
 from shard.registry import get_all_components
 
 
 class Command(BaseCommand):
     help = "List registered Shard components."
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--verbose",
+            action="store_true",
+            help="Show template, scope, and template-exists details per component.",
+        )
 
     def handle(self, *args, **options):
         components = get_all_components()
@@ -24,3 +33,26 @@ class Command(BaseCommand):
             )
             self.stdout.write(f"{'':<{name_width}}  props: {props}")
             self.stdout.write(f"{'':<{name_width}}  actions: {actions}")
+
+            if options["verbose"]:
+                template_name = component_cls.template_name or "—"
+                scope = component_cls.scope or component_cls.component_name
+                styles = "yes" if component_cls.scoped_styles else "no"
+                self.stdout.write(f"{'':<{name_width}}  template: {template_name}")
+                self.stdout.write(f"{'':<{name_width}}  scope: {scope}")
+                self.stdout.write(f"{'':<{name_width}}  scoped_styles: {styles}")
+
+                if not component_cls.template_name:
+                    self.stdout.write(
+                        self.style.WARNING(f"{'':<{name_width}}  warning: missing template_name")
+                    )
+                else:
+                    try:
+                        get_template(component_cls.template_name)
+                    except TemplateDoesNotExist:
+                        self.stdout.write(
+                            self.style.WARNING(
+                                f"{'':<{name_width}}  warning: template not found: "
+                                f"{component_cls.template_name}"
+                            )
+                        )

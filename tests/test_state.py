@@ -21,7 +21,7 @@ def test_state_store_round_trip():
 
 
 def test_state_store_missing_raises():
-    with pytest.raises(StateNotFoundError):
+    with pytest.raises(StateNotFoundError, match="SHARD_STATE_TIMEOUT"):
         StateStore.load("does-not-exist")
 
 

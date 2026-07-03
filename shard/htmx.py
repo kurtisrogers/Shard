@@ -1,14 +1,19 @@
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from django.utils.html import escape
 from django.utils.safestring import SafeString, mark_safe
 
+from shard.debug import warn_missing_action
+
+if TYPE_CHECKING:
+    from shard.component import Component
+
 
 def build_htmx_attrs(
-    component: Any,
+    component: Component,
     action: str,
     *,
     swap: str = "outerHTML",
@@ -21,6 +26,7 @@ def build_htmx_attrs(
 
     url = component.action_urls().get(action)
     if not url:
+        warn_missing_action(component, action, source="shard_htmx")
         return mark_safe("")
 
     target_id = target or f"#shard-{component.instance_id}"
@@ -40,7 +46,7 @@ def build_htmx_attrs(
     return mark_safe(" ".join(attrs))
 
 
-def build_alpine_data(component: Any, extra: dict[str, Any] | None = None) -> SafeString:
+def build_alpine_data(component: Component, extra: dict[str, Any] | None = None) -> SafeString:
     """Serialize ``get_client_state()`` for an Alpine.js ``x-data`` attribute."""
 
     data: dict[str, Any] = {}

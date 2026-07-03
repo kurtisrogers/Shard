@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from shard.registry import register
+from shard.testing import extract_instance_id
 from tests.support.components import (
     Minimal,
     NoStyles,
@@ -34,8 +35,5 @@ def register_test_components():
 
 
 @pytest.fixture
-def instance_id_from_html():
-    def _extract(html: str) -> str:
-        return html.split('id="shard-')[1].split('"')[0]
-
-    return _extract
+def shard_instance_id():
+    return extract_instance_id
