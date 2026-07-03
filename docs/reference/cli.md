@@ -28,6 +28,18 @@ Verifies:
 
 Exits with code 1 when issues are found (suitable for CI smoke checks).
 
+## shard_a11y
+
+Check rendered components and view-data output for common accessibility issues:
+
+```bash
+python manage.py shard_a11y
+python manage.py shard_a11y --json
+python manage.py shard_a11y path/to/components/card.html
+```
+
+Runs smoke renders for registered components and configured view-data trees, then checks the HTML. See the [Accessibility guide](../guides/accessibility.md).
+
 ## shard_report
 
 Report framework size and page-load weight:

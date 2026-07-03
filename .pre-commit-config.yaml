@@ -26,3 +26,13 @@ repos:
       - id: prettier
         types_or: [yaml, markdown, json]
         exclude: ^(shard/static/|site/)
+
+  - repo: local
+    hooks:
+      - id: shard-a11y
+        name: Shrd accessibility
+        entry: scripts/shard_a11y_precommit.sh
+        language: system
+        pass_filenames: true
+        always_run: true
+        files: \.(html|py)$

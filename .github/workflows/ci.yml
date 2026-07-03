@@ -20,6 +20,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install package for local pre-commit hooks
+        run: pip install -e ".[dev]"
+
       - uses: pre-commit/action@v3.0.1
 
   lint:

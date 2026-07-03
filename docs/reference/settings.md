@@ -79,6 +79,34 @@ SHARD_VIEW_DATA_ALLOWED_COMPONENTS = [
 
 For security, always restrict which components view data can instantiate. Never pass user-controlled component names without validation.
 
+## SHARD_A11Y_COMPONENT_SAMPLES
+
+**Default:** built-in smoke props per component (example app) or `{}`
+
+Dict mapping component names to `{"props": {...}, "slots": {...}}` used by `shard_a11y` when rendering accessibility samples.
+
+```python
+SHARD_A11Y_COMPONENT_SAMPLES = {
+    "Counter": {"props": {"initial": 0, "step": 1}, "slots": {}},
+}
+```
+
+## SHARD_A11Y_VIEW_DATA
+
+**Default:** example demo tree when the example app is installed
+
+List of `(name, tree, allowed_components)` tuples for `shard_a11y` to render and check. View-data trees are rendered to HTML before rules run.
+
+```python
+SHARD_A11Y_VIEW_DATA = [
+    (
+        "dashboard",
+        {"component": "Layout", "slots": {"default": []}},
+        frozenset({"Layout"}),
+    ),
+]
+```
+
 ## Context processor
 
 Add `shard.context_processors.shard` to expose `SHARD` in templates:

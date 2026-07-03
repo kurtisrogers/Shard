@@ -9,6 +9,7 @@
       class="todo__input"
       type="text"
       name="text"
+      aria-label="{{ props.placeholder }}"
       placeholder="{{ props.placeholder }}"
       value="{{ state.draft }}"
       {% shard_htmx component "set_draft" trigger="keyup changed delay:300ms" %}

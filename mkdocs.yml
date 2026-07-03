@@ -75,6 +75,7 @@ nav:
       - guides/nested-components.md
       - guides/performance.md
       - guides/testing.md
+      - guides/accessibility.md
   - Reference:
       - reference/template-tags.md
       - reference/settings.md
