@@ -24,7 +24,7 @@ myproject/
 Each Django app can have a `components.py` module at the app root. Shrd's autodiscover imports it at startup and registers every `Component` subclass **defined in that file**.
 
 !!! note "Autodiscover only registers classes defined in `components.py`"
-    Classes imported from other modules are **not** registered automatically, even if they appear in `components.py`. For example, this `DatePicker` would be skipped:
+Classes imported from other modules are **not** registered automatically, even if they appear in `components.py`. For example, this `DatePicker` would be skipped:
 
     ```python
     from .widgets import DatePicker  # defined in widgets.py, not registered
