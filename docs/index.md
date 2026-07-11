@@ -60,3 +60,8 @@ Shrd keeps you in Django:
 - [Core concepts](concepts/philosophy.md)
 - [Testing your project](guides/testing.md)
 - [Examples](examples.md)
+
+## Project
+
+- [Roadmap](roadmap.md) — planned features and release themes
+- [Security](security.md) — dependency audits and security guidance
