@@ -4,13 +4,13 @@ This page documents Shrd's security posture, how to audit dependencies, and the 
 
 ## Summary
 
-| Area | Status | Notes |
-| ---- | ------ | ----- |
-| Python runtime dependencies | **No known CVEs** | `Django>=4.2` only; audited with `pip-audit` |
-| Dev / docs dependencies | **No known CVEs** | pytest, ruff, mkdocs-material, pre-commit |
-| Bundled HTMX | **Update available** | Shipped `2.0.4`; latest stable `2.0.9` |
-| Bundled Alpine.js | **Update available** | Shipped `3.14.8`; latest stable `3.15.12` |
-| Application surface | **Standard Django** | No extra DB tables; state in Django cache |
+| Area                        | Status               | Notes                                        |
+| --------------------------- | -------------------- | -------------------------------------------- |
+| Python runtime dependencies | **No known CVEs**    | `Django>=4.2` only; audited with `pip-audit` |
+| Dev / docs dependencies     | **No known CVEs**    | pytest, ruff, mkdocs-material, pre-commit    |
+| Bundled HTMX                | **Update available** | Shipped `2.0.4`; latest stable `2.0.9`       |
+| Bundled Alpine.js           | **Update available** | Shipped `3.14.8`; latest stable `3.15.12`    |
+| Application surface         | **Standard Django**  | No extra DB tables; state in Django cache    |
 
 Shrd adds no middleware and no background workers. Security boundaries are the same as a typical Django app: escape untrusted content, validate action payloads, and restrict view-data component whitelists.
 
@@ -41,11 +41,11 @@ When upgrading Django in your project, follow [Django's security release notes](
 
 Shrd ships HTMX and Alpine.js as static files under `shard/static/shard/js/`. No CDN is required at runtime.
 
-| Asset | Bundled version | Latest stable (Jul 2026) | Gzip size |
-| ----- | --------------- | ------------------------ | --------- |
-| `htmx.min.js` | 2.0.4 | 2.0.9 | ~16 KB |
-| `alpine.min.js` | 3.14.8 | 3.15.12 | ~16 KB |
-| `shard.js` | — | — | <1 KB |
+| Asset           | Bundled version | Latest stable (Jul 2026) | Gzip size |
+| --------------- | --------------- | ------------------------ | --------- |
+| `htmx.min.js`   | 2.0.4           | 2.0.9                    | ~16 KB    |
+| `alpine.min.js` | 3.14.8          | 3.15.12                  | ~16 KB    |
+| `shard.js`      | —               | —                        | <1 KB     |
 
 Check bundled versions locally:
 

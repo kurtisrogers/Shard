@@ -59,7 +59,7 @@ See the [quickstart guide](https://kurtisrogers.github.io/Shard/getting-started/
 | View data      | [guides/view-data](https://kurtisrogers.github.io/Shard/guides/view-data/)                         |
 | API reference  | [reference/api](https://kurtisrogers.github.io/Shard/reference/api/)                               |
 | Examples       | [examples](https://kurtisrogers.github.io/Shard/examples/)                                         |
-| Roadmap        | [roadmap](https://kurtisrogers.github.io/Shard/roadmap/)                                         |
+| Roadmap        | [roadmap](https://kurtisrogers.github.io/Shard/roadmap/)                                           |
 | Security       | [security](https://kurtisrogers.github.io/Shard/security/)                                         |
 
 ## Example app
