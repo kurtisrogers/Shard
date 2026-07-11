@@ -5,6 +5,18 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Bundled HTMX updated from `2.0.4` to `2.0.9`
+- Bundled Alpine.js updated from `3.14.8` to `3.15.12`
+
+### Added
+
+- `pip-audit` in dev dependencies and CI security audit job
+- Dependabot configuration for pip and GitHub Actions
+
 ## [0.3.0] - 2026-07-01
 
 ### Added
