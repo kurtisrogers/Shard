@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.1] - 2026-07-11
 
 ### Changed
 
@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `pip-audit` in dev dependencies and CI security audit job
 - Dependabot configuration for pip and GitHub Actions
+- Security and roadmap documentation (`docs/security.md`, `docs/roadmap.md`)
 
 ## [0.3.0] - 2026-07-01
 
@@ -39,4 +40,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - HTMX actions and Alpine.js integration
 - Performance/size reporting (`shard_report`)
 
+[0.3.1]: https://github.com/kurtisrogers/Shard/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/kurtisrogers/Shard/compare/v0.2.0...v0.3.0

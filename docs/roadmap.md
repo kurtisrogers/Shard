@@ -2,7 +2,7 @@
 
 This roadmap describes planned and proposed work for Shrd. It is updated periodically and reflects maintainer priorities as of **July 2026**.
 
-**Current release:** `0.3.0` — view data, `ViewTreeComponent`, HTMX/Alpine guides.
+**Current release:** `0.3.1` — security updates, bundled asset bumps, security/roadmap docs.
 
 !!! note "How to influence the roadmap"
 Open a [GitHub discussion](https://github.com/kurtisrogers/Shard/discussions) or issue with your use case. Features that solve real project needs are prioritized over speculative additions.
