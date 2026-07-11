@@ -81,6 +81,10 @@ nav:
       - reference/api.md
       - reference/cli.md
   - Examples: examples.md
+  - Project:
+      - roadmap.md
+      - security.md
+      - RELEASING.md
 
 extra:
   social:
